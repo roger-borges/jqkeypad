@@ -1,0 +1,110 @@
+﻿    div#NumberPad
+    {
+        width: 270px;
+        margin:0 auto;
+    }
+    
+    div#NumberPad div#CurrentBill
+    {
+        width:254px;
+        margin:2px;
+        padding:2px 4px 2px 0px;
+        height:25px;
+        font-size:1.5em;
+        font-weight:bold;
+    }
+    
+    div#NumberPad div#CurrentBill div#CurrentBillAmountLabel
+    {
+        width:auto;
+        float:left;
+    }
+    
+    div#NumberPad div#CurrentBill div#CurrentBillAmount
+    {
+        width:auto;
+        float:right;
+    }
+    
+    div#NumberPad div.KeyPadValue
+    {
+        width:248px;
+        margin:2px;
+        padding:8px 4px 2px 4px;
+        height:25px;
+        background-color:#fff;
+        color:#000;
+        border:5px solid #b45d16;
+        font-size:20px;
+        font-weight:bold;
+        text-align:right;
+    }
+    
+    div#NumberPad ul
+    {
+        background-color:transparent;
+        width: 100%;
+        list-style-type:none;
+        padding:0;
+        margin:0;
+    }
+    
+    div#NumberPad ul li
+    {
+        display:block;
+        float:left;
+        padding:0;
+        margin:2px;
+        width:40px;
+        height:40px;
+        border:5px solid #b45d16;
+        text-align:center;
+        cursor:pointer;
+        
+        color:#555;
+    }
+    
+    div#NumberPad ul li:hover
+    {
+        color:#444;
+        background-color:#eeffef;
+    }
+    
+    div#NumberPad ul li.double
+    {
+        width:94px;
+    }
+    
+    div#NumberPad ul li.large
+    {
+        width:94px;
+        height:94px;
+    }
+    
+    div#NumberPad ul li.large div
+    {
+        padding-top:38px;
+    }
+    
+    div#NumberPad ul li.floatRight
+    {
+        float:right;
+    }
+    
+    div#NumberPad ul li.placeholder
+    {
+        display:block;
+        float:left;
+        padding:0;
+        margin:2px;
+        border:5px solid transparent;
+        text-align:center;
+        cursor:default;        
+        color:transparent;
+    }
+    
+     div#NumberPad ul li div
+     {
+         font-size:24px;
+         padding-top:12px;
+     }
