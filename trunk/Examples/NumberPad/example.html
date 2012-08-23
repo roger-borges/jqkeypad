@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Sample Number Pad</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+    <link rel="stylesheet" href="jq-keypad.css" type="text/css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+    <script src="../../jquery-keypad.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var x = $('#NumberPad').jqKeyPad();
+        }); 
+
+
+</script>
+</head>
+<body>
+    <div id="PageContainer">
+        <h1>Number Pad Demonstration</h1>
+        <div id="NumberPad">
+            <div class="KeyPadValue"></div>
+            <input type="hidden" id="txtEnteredValue" />
+            <ul>
+                <li val="1"><div>1</div></li>
+                <li val="2"><div>2</div></li>
+                <li val="3"><div>3</div></li>
+                <li class="double floatRight back"><div>&larr;</div></li>
+                <li val="4"><div>4</div></li>
+                <li val="5"><div>5</div></li>
+                <li val="6"><div>6</div></li>
+                <li class="double floatRight reset"><div>Clear</div></li>
+                <li val="7"><div>7</div></li>
+                <li val="8"><div>8</div></li>
+                <li val="9"><div>9</div></li>
+                <li class="placeholder double"></li>
+                <li val="0"><div>0</div></li>
+                <li val="00"><div>00</div></li>
+                <li val="."><div>.</div></li>
+            </ul>
+        </div>
+
+        <br class="clearBoth" />
+    </div>
+</body>
+</html>
