@@ -2,9 +2,13 @@
 
 = List of Future Plans for jqKeyPad=
 
- * Initialization parameters to allow user to change KeyPad configuration
- * Support full keyboard
- * Support events so users can create their own functionality without changing the plugin
+
+ * Support full keyboard - in progress
+ * Support events so users can create their own functionality without changing the plugin - in progress
  * KeyPad popup support for use in kiosks
  * JQuery UI style support
  * Ability to switch between keyboards (ie. Shift of Caps Lock)
+
+==Completed Changes==
+ * Initialization parameters to allow user to change KeyPad configuration
+ * NumberPad has variable precision support
