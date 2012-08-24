@@ -14,6 +14,25 @@ Date: August 22, 2012
                      text: $this.attr('title')
                  });
 
+                options = $.extend({
+                    mode: 'numeric',
+                    precision: 2,
+                    onButtonCommand: null //method({buttonfunc, arg})
+                }, options);
+
+                var modeAttribute = $this.attr('mode');
+                if (modeAttribute == 'numeric' || modeAttribute == 'alphanumeric') {
+                    options.mode = modeAttribute;
+                }
+
+                if (options.mode == 'numeric') {
+                    var precisionAttribute = parseInt($this.attr('precision'));
+                    if (!isNaN(precisionAttribute) && precisionAttribute > 0) {
+                        options.precision = precisionAttribute;
+                    }
+                }
+
+
                 // If the plugin hasn't been initialized yet
                 if (!data) {
                     $(this).data('jqKeyPad', {
@@ -21,56 +40,107 @@ Date: August 22, 2012
                         jqKeyPad: jqKeyPad
                     });
 
+                    $this.data('options', options);
+
                     //set the value if preloaded
                     if ($this.children('#txtEnteredValue').val() != '') {
                         $this.data('currentValue', $this.children('#txtEnteredValue').val())
                         $this.children('div.KeyPadValue').html($this.data('currentValue'));
                     }
 
+                    //numeric button click
                     $(this).children('ul').children('li').bind('click.jqKeyPad', function () {
-                        var value = String($(this).attr('val'));
-                        if (value != null && !(value === "undefined")) {
-                            var newChar = value;
-                            var currentValue = $this.data('currentValue');
-
-                            if (currentValue == null) {
-                                //initialize the current value
-                                currentValue = newChar;
+                        var continueValueProcessing = true;
+                        if (options.onButtonCommand != null) {
+                            var cmd = $(this).attr('commandName');
+                            //if the commandName doesnt exist then don't call onButtonCommand
+                            var isFunc = true;
+                            if (cmd === undefined) {
+                                isFunc = false;
                             }
-                            else if (newChar == '.') {
-                                currentValue = currentValue.toString();
-                                if (currentValue.indexOf(newChar) == -1) {
-                                    //append decimal to end
-                                    currentValue = currentValue + newChar;
+                            if (isFunc == true) {
+                                //call callback method defined in options
+                                var args = $(this).attr('commandArgument');
+                                var val = $(this).attr('value');
+
+                                var result = options.onButtonCommand({ command: cmd, argument: args, value: val });
+                                if (result == false) {
+                                    continueValueProcessing = false;
+                                }
+                            }
+                        }
+
+                        //handle button press
+                        if (continueValueProcessing == true) {
+                            if (options.mode == 'numeric') {
+                                //numeric mode
+                                var value = String($(this).attr('val'));
+                                if (value != null && !(value === "undefined")) {
+                                    var newChar = value;
+                                    var currentValue = $this.data('currentValue');
+
+                                    if (currentValue == null) {
+                                        //initialize the current value
+                                        currentValue = newChar;
+                                    }
+                                    else if (newChar == '.') {
+                                        currentValue = currentValue.toString();
+                                        if (currentValue.indexOf(newChar) == -1) {
+                                            //append decimal to end
+                                            currentValue = currentValue + newChar;
+                                        }
+                                    }
+                                    else {
+                                        currentValue = currentValue.toString();
+                                        //append number, precision 2 only
+                                        if (currentValue.indexOf('.') == -1) {
+                                            currentValue = currentValue + newChar;
+                                        }
+                                        else {
+                                            //only add character if there is not yet two decimals added
+                                            //TODO: variable precision 
+                                            var indexOfDecimal = currentValue.indexOf('.');
+                                            var precisionOnly = currentValue.substring(indexOfDecimal);
+                                            alert(options.precision);
+                                            if (precisionOnly.length <= options.precision) {
+                                                currentValue = currentValue + newChar;
+                                            }
+                                        }
+                                    }
+
+                                    $this.data('currentValue', currentValue);
+
+                                    //show new value
+                                    $this.children('div.KeyPadValue').html($this.data('currentValue'));
+                                    $this.children('#txtEnteredValue').val($this.data('currentValue'));
                                 }
                             }
                             else {
-                                currentValue = currentValue.toString();
-                                //append number, precision 2 only
-                                if (currentValue.indexOf('.') == -1) {
-                                    currentValue = currentValue + newChar;
-                                }
-                                else {
-                                    //only add character if there is not yet two decimals added
-                                    //TODO: variable precision 
-                                    var indexOfDecimal = currentValue.indexOf('.');
-                                    var precisionOnly = currentValue.substring(indexOfDecimal);
+                                //regular alphanumeric keyboard
+                                var value = String($(this).attr('val'));
+                                if (value != null && !(value === "undefined")) {
+                                    var newChar = value;
+                                    var currentValue = $this.data('currentValue');
 
-                                    if (precisionOnly.length <= 2) {
-                                        currentValue = currentValue + newChar;
+                                    if (currentValue == null) {
+                                        //initialize the current value
+                                        currentValue = newChar;
                                     }
+                                    else {
+                                        currentValue += newChar;
+                                    }
+
+                                    $this.data('currentValue', currentValue);
+
+                                    //show new value
+                                    $this.children('div.KeyPadValue').html($this.data('currentValue'));
+                                    $this.children('#txtEnteredValue').val($this.data('currentValue'));
                                 }
                             }
-
-                            $this.data('currentValue', currentValue);
-
-                            //show new value
-                            $this.children('div.KeyPadValue').html($this.data('currentValue'));
-                            $this.children('#txtEnteredValue').val($this.data('currentValue'));
                         }
-
                     });
 
+                    //reset click
                     $(this).children('ul').children('li.reset').bind('click.jqKeyPad', function () {
                         $this.data('currentValue', null);
                         //show new value
@@ -78,6 +148,7 @@ Date: August 22, 2012
                         $this.children('#txtEnteredValue').val('');
                     });
 
+                    //back click
                     $(this).children('ul').children('li.back').bind('click.jqKeyPad', function () {
                         var currentValue = $this.data('currentValue');
                         if (currentValue != null && currentValue != '') {
@@ -87,6 +158,7 @@ Date: August 22, 2012
                         }
                     });
 
+                    //document keypress, compares against values on keyboard
                     $(document).bind('keypress.jqKeyPad', function (e) {
                         var newChar = String.fromCharCode(e.keyCode ? e.keyCode : e.which);
 

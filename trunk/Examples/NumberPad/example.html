@@ -9,7 +9,13 @@
     <script src="../../jquery-keypad.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            var x = $('#NumberPad').jqKeyPad();
+            var x = $('#NumberPad').jqKeyPad({
+                onButtonCommand: function (e) {
+                    alert('onButtonCommand: ' + e.command + ' : ' + e.argument + ' : ' + e.value);
+                    //return false to prevent the value from entering the keypad display
+                    return false;
+                }
+            });
         }); 
 
 
@@ -18,7 +24,7 @@
 <body>
     <div id="PageContainer">
         <h1>Number Pad Demonstration</h1>
-        <div id="NumberPad">
+        <div id="NumberPad" mode="numeric" precision="5">
             <div class="KeyPadValue"></div>
             <input type="hidden" id="txtEnteredValue" />
             <ul>
@@ -33,7 +39,7 @@
                 <li val="7"><div>7</div></li>
                 <li val="8"><div>8</div></li>
                 <li val="9"><div>9</div></li>
-                <li class="placeholder double"></li>
+                <li class="large floatRight" val="testval" commandName="testname" commandArgument="testargs"><div>Cmd</div></li>
                 <li val="0"><div>0</div></li>
                 <li val="00"><div>00</div></li>
                 <li val="."><div>.</div></li>
