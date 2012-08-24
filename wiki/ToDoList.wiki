@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#List of Future Plans for jqKeyPad
 
 = List of Future Plans for jqKeyPad=
 
