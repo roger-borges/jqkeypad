@@ -7,3 +7,4 @@
  * Support events so users can create their own functionality without changing the plugin
  * KeyPad popup support for use in kiosks
  * JQuery UI style support
+ * Ability to switch between keyboards (ie. Shift of Caps Lock)
