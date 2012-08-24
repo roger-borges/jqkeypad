@@ -1,4 +1,4 @@
-# List of Future Plans for jqKeyPad
+#summary List of Future Plans for jqKeyPad
 
 = List of Future Plans for jqKeyPad=
 
