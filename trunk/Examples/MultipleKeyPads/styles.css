@@ -1,0 +1,36 @@
+﻿div#PageContainer
+{
+    margin:0 auto;
+    padding:10px;
+    width:800px;
+    border:5px solid #000;
+}
+
+br.clearBoth
+{
+    clear:both;
+}
+
+h1
+{
+    margin:0 0 20px 0;
+    padding:0;
+}
+
+div#EnteredData
+{
+    width:800px;
+}
+
+div#EnteredData label
+{
+    display:block;
+    width:100%;
+}
+
+div#EnteredData textarea
+{
+    display:block;
+    width:100%;
+    height:80px;
+}
