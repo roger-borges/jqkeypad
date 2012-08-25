@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Sample Multiple KeyPads</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+    <link rel="stylesheet" href="jq-keypad.css" type="text/css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" type="text/javascript"></script>
+    <script src="../../jquery-keypad.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var x = $('#KeyboardPad').jqKeyPad({
+                onButtonCommand: function (e) {
+                    if (e.command == 'Enter') {
+                        var textToAdd = $('#KeyboardPad').jqKeyPad('GetValue') + '\n';
+                        $('#txtEnterText').val($('#txtEnterText').val() + textToAdd);
+                        $('#KeyboardPad').jqKeyPad('ClearValue');
+                    }
+                    else if (e.command == 'ShowPad') {
+                        $('#KeyboardPad').jqKeyPad('ShowKeyPad', e.argument);
+                    }
+                    else if (e.command == 'Space') {
+                        var textToAdd = $('#KeyboardPad').jqKeyPad('GetValue') + e.argument;
+                        $('#txtEnterText').val($('#txtEnterText').val() + textToAdd);
+                        $('#KeyboardPad').jqKeyPad('ClearValue');
+                    }
+                    //alert('onButtonCommand: ' + e.command + ' : ' + e.argument + ' : ' + e.value);
+                    //return false to prevent the value from entering the keypad display
+                    return false;
+                }
+            });
+        }); 
+
+
+</script>
+</head>
+<body>
+    <div id="PageContainer">
+        <h1>Multiple KeyPad Demonstration</h1>
+        <p>
+            A few things to note:
+            <ol>
+                <li>Clicking Caps will switch to the Caps Lock keyboard</li>
+                <li>Clicking NumPad will switch to the NumberPad keyboard</li>
+                <li>Clicking the Keyboard button on the Caps Lock or NumberPad keyboards will take you back to the original keyboard</li>
+                <li>Pressing Space(SpaceCommand) will take the current text and add it to the textarea box with a space appended</li>
+                <li>Pressing Enter will append the current text to the textarea and append a new line</li>
+            </ol>
+        </p>
+        <div id="EnteredData">
+            <label>Text Entered When Return or Space is Pressed</label>
+            <textarea id="txtEnterText" readonly="readonly"></textarea>
+        </div>
+
+        <div id="KeyboardPad" mode="alphanumeric" initialKeyPad="LowerCaseKeyboard">
+            <div class="KeyPadValue"></div>
+            <input type="hidden" id="txtEnteredValue" />
+            <ul KeyPadName="LowerCaseKeyboard">
+                <!--first row-->
+                <li val="`"><div>`</div></li>
+                <li val="1"><div>1</div></li>
+                <li val="2"><div>2</div></li>
+                <li val="3"><div>3</div></li>
+                <li val="4"><div>4</div></li>
+                <li val="5"><div>5</div></li>
+                <li val="6"><div>6</div></li>
+                <li val="7"><div>7</div></li>
+                <li val="8"><div>8</div></li>
+                <li val="9"><div>9</div></li>
+                <li val="0"><div>0</div></li>
+                <li val="-"><div>-</div></li>
+                <li val="="><div>=</div></li>
+                <li class="back"><div>&larr;</div></li>
+
+                <!--second row-->
+                <li val="&#09;"><div>Tab</div></li>
+                <li val="q"><div>q</div></li>
+                <li val="w"><div>w</div></li>
+                <li val="e"><div>e</div></li>
+                <li val="r"><div>r</div></li>
+                <li val="t"><div>t</div></li>
+                <li val="y"><div>y</div></li>
+                <li val="u"><div>u</div></li>
+                <li val="i"><div>i</div></li>
+                <li val="o"><div>o</div></li>
+                <li val="p"><div>p</div></li>
+                <li val="["><div>[</div></li>
+                <li val="]"><div>]</div></li>
+                <li val="\"><div>\</div></li>
+                
+                <!--third row-->
+                <li class="fiftyPercentLarger" commandName="ShowPad" commandArgument="UpperCaseKeyboard"><div>Caps</div></li>
+                <li val="a"><div>a</div></li>
+                <li val="s"><div>s</div></li>
+                <li val="d"><div>d</div></li>
+                <li val="f"><div>f</div></li>
+                <li val="g"><div>g</div></li>
+                <li val="h"><div>h</div></li>
+                <li val="j"><div>j</div></li>
+                <li val="k"><div>k</div></li>
+                <li val="l"><div>l</div></li>
+                <li val=";"><div>;</div></li>
+                <li val="'"><div>'</div></li>
+                <li val="\r" class="fiftyPercentLarger" commandName="Enter" commandArgument=""><div>Enter</div></li>
+
+                <!--fourth row-->
+                <li class="double" commandName="ShowPad" commandArgument="NumberKeyPad"><div>NumPad</div></li>
+                <li val="z"><div>z</div></li>
+                <li val="x"><div>x</div></li>
+                <li val="c"><div>c</div></li>
+                <li val="v"><div>v</div></li>
+                <li val="b"><div>b</div></li>
+                <li val="n"><div>n</div></li>
+                <li val="m"><div>m</div></li>
+                <li val=","><div>,</div></li>
+                <li val="."><div>.</div></li>
+                <li val="/"><div>/</div></li>
+                <li class="double reset"><div>Clear</div></li>
+                
+                <!--fifth row-->
+                <li val="@"><div>@</div></li>
+                <li class="fiftyPercentLarger" val=".com"><div>.com</div></li>
+                <li class="triple" val="@gmail.com"><div>@gmail.com</div></li>
+                <li class="quadruple" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="triple" val="@hotmail.com"><div>@hotmail.com</div></li>
+                <li class="fiftyPercentLarger" val=".net"><div>.net</div></li>
+            </ul>
+
+            
+            <ul KeyPadName="UpperCaseKeyboard">
+                <!--first row-->
+                <li val="~"><div>~</div></li>
+                <li val="!"><div>!</div></li>
+                <li val="@"><div>@</div></li>
+                <li val="#"><div>#</div></li>
+                <li val="$"><div>$</div></li>
+                <li val="%"><div>%</div></li>
+                <li val="^"><div>^</div></li>
+                <li val="&"><div>&amp;</div></li>
+                <li val="*"><div>*</div></li>
+                <li val="("><div>(</div></li>
+                <li val=")"><div>)</div></li>
+                <li val="_"><div>_</div></li>
+                <li val="+"><div>+</div></li>
+                <li class="back"><div>&larr;</div></li>
+
+                <!--second row-->
+                <li val="&#09;"><div>Tab</div></li>
+                <li val="Q"><div>Q</div></li>
+                <li val="W"><div>W</div></li>
+                <li val="E"><div>E</div></li>
+                <li val="R"><div>R</div></li>
+                <li val="T"><div>T</div></li>
+                <li val="Y"><div>Y</div></li>
+                <li val="U"><div>U</div></li>
+                <li val="I"><div>I</div></li>
+                <li val="O"><div>O</div></li>
+                <li val="P"><div>P</div></li>
+                <li val="{"><div>{</div></li>
+                <li val="}"><div>}</div></li>
+                <li val="|"><div>|</div></li>
+                
+                <!--third row-->
+                <li class="fiftyPercentLarger" commandName="ShowPad" commandArgument="LowerCaseKeyboard"><div>Caps</div></li>
+                <li val="A"><div>A</div></li>
+                <li val="S"><div>S</div></li>
+                <li val="D"><div>D</div></li>
+                <li val="F"><div>F</div></li>
+                <li val="G"><div>G</div></li>
+                <li val="H"><div>H</div></li>
+                <li val="J"><div>J</div></li>
+                <li val="K"><div>K</div></li>
+                <li val="L"><div>L</div></li>
+                <li val=":"><div>:</div></li>
+                <li val='"'><div>"</div></li>
+                <li val="\r" class="fiftyPercentLarger" commandName="Enter" commandArgument=""><div>Enter</div></li>
+
+                <!--fourth row-->
+                <li class="double" commandName="ShowPad" commandArgument="NumberKeyPad"><div>NumPad</div></li>
+                <li val="Z"><div>Z</div></li>
+                <li val="X"><div>X</div></li>
+                <li val="C"><div>C</div></li>
+                <li val="V"><div>V</div></li>
+                <li val="B"><div>B</div></li>
+                <li val="N"><div>N</div></li>
+                <li val="M"><div>M</div></li>
+                <li val="<"><div>&lt;</div></li>
+                <li val=">"><div>&gt;</div></li>
+                <li val="?"><div>?</div></li>
+                <li class="double reset"><div>Clear</div></li>
+                
+                <!--fifth row-->
+                <li val=":)"><div>:)</div></li>
+                <li class="fiftyPercentLarger" val=".com"><div>.com</div></li>
+                <li class="triple" val="@gmail.com"><div>@gmail.com</div></li>
+                <li class="quadruple" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="triple" val="@hotmail.com"><div>@hotmail.com</div></li>
+                <li class="fiftyPercentLarger" val=".net"><div>.net</div></li>
+            </ul>
+
+            <ul KeyPadName="NumberKeyPad">
+                <li class="back floatRight"><div>&larr;</div></li>     
+                <li class="double floatRight" val="\r" class="fiftyPercentLarger" commandName="Enter" commandArgument=""><div>Enter</div></li>
+                <li class="quadruple floatRight" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+
+                <li val="1"><div>1</div></li>
+                <li val="2"><div>2</div></li>
+                <li val="3"><div>3</div></li>
+                <li class="clearBoth" val="4"><div>4</div></li>
+                <li val="5"><div>5</div></li>
+                <li val="6"><div>6</div></li>
+
+                <li class="double reset floatRight"><div>Clear</div></li> 
+
+                <li class="clearBoth" val="7"><div>7</div></li>
+                <li val="8"><div>8</div></li>
+                <li val="9"><div>9</div></li>
+
+                <li class="quadruple floatRight" commandName="ShowPad" commandArgument="LowerCaseKeyboard"><div>Lower Case Keys</div></li> 
+
+                <li class="clearBoth" val="0"><div>0</div></li>
+                <li val="."><div>.</div></li>
+                <li val=","><div>,</div></li>
+                
+                <li class="quadruple floatRight" commandName="ShowPad" commandArgument="UpperCaseKeyboard"><div>Upper Case Keys</div></li> 
+                         
+                
+            </ul>
+            <br class="clearBoth" />
+        </div>
+
+        <br class="clearBoth" />
+    </div>
+</body>
+</html>

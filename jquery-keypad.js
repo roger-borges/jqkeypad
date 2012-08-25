@@ -14,31 +14,61 @@ Date: August 22, 2012
                      text: $this.attr('title')
                  });
 
-                options = $.extend({
-                    mode: 'numeric',
-                    precision: 2,
-                    onButtonCommand: null //method({buttonfunc, arg})
-                }, options);
-
-                var modeAttribute = $this.attr('mode');
-                if (modeAttribute == 'numeric' || modeAttribute == 'alphanumeric') {
-                    options.mode = modeAttribute;
-                }
-
-                if (options.mode == 'numeric') {
-                    var precisionAttribute = parseInt($this.attr('precision'));
-                    if (!isNaN(precisionAttribute) && precisionAttribute > 0) {
-                        options.precision = precisionAttribute;
-                    }
-                }
-
-
                 // If the plugin hasn't been initialized yet
                 if (!data) {
                     $(this).data('jqKeyPad', {
                         target: $this,
                         jqKeyPad: jqKeyPad
                     });
+
+                    options = $.extend({
+                        mode: 'numeric',
+                        precision: 2,
+                        initialKeyPad: null,
+                        onButtonCommand: null //method({buttonfunc, arg})
+                    }, options);
+
+                    var modeAttribute = $this.attr('mode');
+                    if (modeAttribute == 'numeric' || modeAttribute == 'alphanumeric') {
+                        options.mode = modeAttribute;
+                    }
+
+                    if (options.mode == 'numeric') {
+                        var precisionAttribute = parseInt($this.attr('precision'));
+                        if (!isNaN(precisionAttribute) && precisionAttribute > 0) {
+                            options.precision = precisionAttribute;
+                        }
+                    }
+
+
+                    var initialKeyPad = $this.attr('initialKeyPad');
+                    if (initialKeyPad != null && initialKeyPad != "") {
+                        options.initialKeyPad = initialKeyPad;
+                    }
+                    if (options.initialKeyPad == '' || options.initialKeyPad === undefined) {
+                        //show first keypad/ul
+                        var lists = $(this).children('ul').hide();
+                        var lists = $(this).children('ul')[0].show();
+                    }
+                    else {
+                        //show the keypad with this name
+                        var listFound = false;
+
+                        $(this).children('ul').each(function () {
+                            var ulKeyPadName = $(this).attr('KeyPadName');
+                            if (ulKeyPadName == options.initialKeyPad) {
+                                $(this).show();
+                                listFound = true;
+                            }
+                            else {
+                                $(this).hide();
+                            }
+                        });
+
+                        if (listFound == false) {
+                            var lists = $(this).children('ul')[0].show();
+                        }
+                    }
 
                     $this.data('options', options);
 
@@ -161,9 +191,11 @@ Date: August 22, 2012
                     //document keypress, compares against values on keyboard
                     $(document).bind('keypress.jqKeyPad', function (e) {
                         var newChar = String.fromCharCode(e.keyCode ? e.keyCode : e.which);
-
+                        //replace carriage return with a value comparable to the attribute value of \r
+                        if (newChar == "\r") {
+                            newChar = '\\r';
+                        }
                         //if the key pressed exists in our collection of buttons, then go ahead and click the button
-                        //TODO: turn keypress support on/off
                         $($this).children('ul').children('li').each(function () {
                             var value = $(this).attr('val');
                             if (value != null && value == newChar) {
@@ -188,9 +220,43 @@ Date: August 22, 2012
                 $this.removeData('jqKeyPad');
 
             })
-
         },
-        GetValue: function () { return $(this).data('currentValue'); }
+        GetValue: function () {
+            var returnValue = $(this).data('currentValue');
+            if (returnValue === undefined) {
+                return '';
+            }
+            else {
+                return returnValue;
+            }
+        },
+        ClearValue: function () {
+            //removes the existing value from the plugin's data state
+            var $this = $(this);
+            $this.data('currentValue', '');
+            $this.children('div.KeyPadValue').html('');
+        },
+        ShowKeyPad: function (keyPadName) {
+            //switch keypads (ul's should have attribute KeyPadName)
+            var $this = $(this);
+            var listFound = false;
+
+            $this.children('ul').each(function () {
+                var ulKeyPadName = $(this).attr('KeyPadName');
+                if (ulKeyPadName == keyPadName) {
+                    $(this).show();
+                    listFound = true;
+                }
+                else {
+                    $(this).hide();
+                }
+            });
+
+            if (listFound == false) {
+                var lists = $(this).children('ul')[0].show();
+            }
+
+        }
     };
 
     $.fn.jqKeyPad = function (method) {
