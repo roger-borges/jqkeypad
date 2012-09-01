@@ -14,6 +14,33 @@ Date: August 22, 2012
                      text: $this.attr('title')
                  });
 
+                var specialCharMap = {
+                    "8": "backspace",
+                    "9": "tab",
+                    "16": "shift",
+                    "17": "ctrl",
+                    "18": "alt",
+                    "19": "pause/break",
+                    "20": "capslock",
+                    "27": "escape",
+                    "33": "pageup",
+                    "34": "pagedown",
+                    "35": "end",
+                    "36": "home",
+                    "37": "leftarrow",
+                    "38": "uparrow",
+                    "39": "rightarrow",
+                    "40": "downarrow",
+                    "45": "insert",
+                    "46": "delete",
+                    "91": "windowleft",
+                    "92": "windowright",
+                    "93": "select",
+                    "144": "numlock",
+                    "145": "scrolllock"
+                };
+                $this.data('specialCharMap', specialCharMap);
+
                 // If the plugin hasn't been initialized yet
                 if (!data) {
                     $(this).data('jqKeyPad', {
@@ -24,8 +51,13 @@ Date: August 22, 2012
                     options = $.extend({
                         mode: 'numeric',
                         precision: 2,
+                        keyPadToShowOnShift: null,
+                        keyPadToShowOnUnshift: null,
                         initialKeyPad: null,
-                        onButtonCommand: null //method({buttonfunc, arg})
+                        onButtonCommand: null, //method({buttonfunc, arg})
+                        onSpecialKeyDown: null,
+                        specialKeyCombos: null,
+                        onSpecialKeyCombo: null
                     }, options);
 
                     var modeAttribute = $this.attr('mode');
@@ -89,13 +121,19 @@ Date: August 22, 2012
                                 isFunc = false;
                             }
                             if (isFunc == true) {
-                                //call callback method defined in options
                                 var args = $(this).attr('commandArgument');
-                                var val = $(this).attr('value');
+                                if (cmd == 'ShowPad') {
+                                    //alert('showing pad');
+                                    $this.jqKeyPad('ShowKeyPad', args);
+                                }
+                                else {
+                                    //call callback method defined in options
+                                    var val = $(this).attr('value');
 
-                                var result = options.onButtonCommand({ command: cmd, argument: args, value: val });
-                                if (result == false) {
-                                    continueValueProcessing = false;
+                                    var result = options.onButtonCommand({ command: cmd, argument: args, value: val });
+                                    if (result == false) {
+                                        continueValueProcessing = false;
+                                    }
                                 }
                             }
                         }
@@ -131,7 +169,7 @@ Date: August 22, 2012
                                             //TODO: variable precision 
                                             var indexOfDecimal = currentValue.indexOf('.');
                                             var precisionOnly = currentValue.substring(indexOfDecimal);
-                                            alert(options.precision);
+                                            //alert(options.precision);
                                             if (precisionOnly.length <= options.precision) {
                                                 currentValue = currentValue + newChar;
                                             }
@@ -195,15 +233,97 @@ Date: August 22, 2012
                         if (newChar == "\r") {
                             newChar = '\\r';
                         }
-                        //if the key pressed exists in our collection of buttons, then go ahead and click the button
-                        $($this).children('ul').children('li').each(function () {
-                            var value = $(this).attr('val');
-                            if (value != null && value == newChar) {
-                                $(this).click();
-                                return false;
-                            }
-                        });
 
+                        //determine if there is a special key combo pressed
+                        var continueKeyPress = true;
+                        if (options.onSpecialKeyCombo != null) {
+                            for (var i in options.specialKeyCombos) {
+                                if (newChar == options.specialKeyCombos[i]) {
+                                    //determine if this item's special key is currently down. if so, fire the onSpecialKeyCombo event
+                                    if ($this.jqKeyPad('IsSpecialKeyDown', i) == true) {
+                                        if (options.onSpecialKeyCombo({
+                                            specialKey: i,
+                                            regularKey: newChar
+                                        }) == false) {
+                                            continueKeyPress = false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (continueKeyPress) {
+                            //if the key pressed exists in our collection of buttons, then go ahead and click the button
+                            $($this).children('ul').children('li').each(function () {
+                                var value = $(this).attr('val');
+                                if (value != null && value == newChar) {
+                                    $(this).click();
+                                    return false;
+                                }
+                            });
+                        }
+
+                    });
+
+                    $(document).bind('keyup', function (e) {
+                        if (e.keyCode == "16" && $this.data('isShift') == true) {
+                            $this.data('isShift', false);//set shift state to true
+                            var keyPadToShowOnUnshift = $this.data('options').keyPadToShowOnUnshift;
+                            if (keyPadToShowOnUnshift != null && keyPadToShowOnUnshift !== undefined) {
+                                $this.children('ul').each(function () {
+                                    var ulKeyPadName = $(this).attr('KeyPadName');
+                                    if (ulKeyPadName == keyPadToShowOnUnshift) {
+                                        $(this).show();
+                                    }
+                                    else {
+                                        $(this).hide();
+                                    }
+                                });
+                            }
+                        }
+
+                        if (specialCharMap[e.keyCode] !== undefined) {
+                            $this.data('is' + e.keyCode, false);
+                            try {
+                                console.log(specialCharMap[e.keyCode] + ' up');
+                            } catch (err) { }
+                        }
+                    });
+
+                    $(document).bind('keydown', function (e) {
+                        if (e.shiftKey == true) {
+                            var keyPadToShowOnShift = $this.data('options').keyPadToShowOnShift;
+                            if (keyPadToShowOnShift != null && keyPadToShowOnShift !== undefined) {
+                                $this.children('ul').each(function () {
+                                    var ulKeyPadName = $(this).attr('KeyPadName');
+                                    if (ulKeyPadName == keyPadToShowOnShift) {
+                                        $(this).show();
+                                        $this.data('isShift', true);//set shift state to true
+                                    }
+                                    else {
+                                        $(this).hide();
+                                    }
+                                });
+                            }
+                        }
+
+                        if (specialCharMap[e.keyCode] !== undefined) {
+                            if ($this.data('is' + e.keyCode) != true) {
+                                $this.data('is' + e.keyCode, true);
+                                try{
+                                    console.log(specialCharMap[e.keyCode] + ' down');
+                                } catch (err) { }
+
+                                if (options.onSpecialKeyDown != null) {
+                                    options.onSpecialKeyDown({
+                                        keyCode: e.keyCode,
+                                        key: specialCharMap[e.keyCode]
+                                    });
+                                }
+                            }
+                        }
+                                
+                        
                     });
                 }
             });
@@ -255,7 +375,20 @@ Date: August 22, 2012
             if (listFound == false) {
                 var lists = $(this).children('ul')[0].show();
             }
-
+        },
+        IsSpecialKeyDown: function (keyName) {
+            var $this = $(this);
+            var charMap = $this.data('specialCharMap');
+            for (var i in charMap) {
+                if (charMap[i] == keyName) {
+                    if ($this.data('is' + i) == true) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
         }
     };
 

@@ -34,3 +34,10 @@ div#EnteredData textarea
     width:100%;
     height:80px;
 }
+
+
+span.keycombo
+{
+    font-weight:bold;
+    font-style:italic;
+}
