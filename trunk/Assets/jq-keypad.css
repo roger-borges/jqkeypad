@@ -1,13 +1,14 @@
 ﻿    div#KeyboardPad
     {
         width: 756px;
-        margin:0 auto;
         border:1px solid black;
-    }
         
-    div#KeyboardPad div.KeyPadValue
-    {
-        display:none;
+        position:fixed;
+        top:50%;
+        left:50%;
+        margin-top: -200px;
+        margin-left: -380px;
+        z-index:5001;
     }
         
     div#KeyboardPad input#txtEnteredValue

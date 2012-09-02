@@ -1,0 +1,31 @@
+﻿    div#KeyboardPad
+    {
+        width: 756px;
+        margin:0 auto;
+        border:1px solid black;
+    }
+        
+    div#KeyboardPad div.KeyPadValue
+    {
+        display:none;
+    }
+        
+    div#KeyboardPad input#txtEnteredValue
+    {
+        width:734px;
+        margin:2px;
+        padding:8px 4px 2px 4px;
+        height:25px;
+        background-color:#fff;
+        color:#000;
+        border:5px solid #b45d16;
+        font-size:20px;
+        font-weight:bold;
+        text-align:right;
+    }
+    
+    div#KeyboardPad ul
+    {
+        display:none;
+    }
+    

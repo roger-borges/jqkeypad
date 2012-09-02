@@ -7,6 +7,11 @@
         
     div#KeyboardPad div.KeyPadValue
     {
+        display:none;
+    }
+        
+    div#KeyboardPad input#txtEnteredValue
+    {
         width:734px;
         margin:2px;
         padding:8px 4px 2px 4px;

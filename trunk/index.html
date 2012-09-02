@@ -1,0 +1,1269 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>jqKeyPad - JQuery Keyboard Plugin - vacatola.com</title>
+    <link href="Assets/styles.css" rel="stylesheet" />
+    <!--<link href="Assets/snippet.css" rel="stylesheet" />-->
+    <link href="Assets/jq-keypad.css" rel="stylesheet" />
+
+    <style>
+        pre.prettyprint
+        {
+            border:none;
+        }
+    </style>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" type="text/javascript"></script>
+    <!--<script src="Assets/snippet.js" type="text/javascript"></script>-->
+    <script type="text/javascript" src="http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js"></script>
+    <script src="jquery-keypad.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$("pre.js").snippet("javascript", { style: "peachpuff" });
+            //$("pre.html").snippet("html", { style: "peachpuff" });
+
+            $.SyntaxHighlighter.init();
+
+            $('img.imgKeyPadThumb').click(function () {
+                $('#overlay').removeClass('hidden');
+                $('#KeyboardPad').removeClass('hidden');
+                $('body').addClass('tmpFixed');
+                $('#KeyboardPad').jqKeyPad('Focus');
+            });
+
+            $('#overlay').click(function () {
+                $('#overlay').addClass('hidden');
+                $('#KeyboardPad').addClass('hidden');
+                $('body').removeClass('tmpFixed');
+            });
+
+
+            $('div.usage div h4').click(function () {
+                var divElement = $(this).parent().children('div');
+                if ($(divElement).is(":visible") == true) {
+                    $(divElement).hide('fast');
+                }
+                else {
+                    $(divElement).show('fast');
+                }
+            });
+
+            $('.divDescriptionText').hide();
+            $('.divDescriptionTitle').click(function () {
+                if ($(this).parent().children('.divDescriptionText').is(':visible') == true) {
+                    $(this).parent().children('.divDescriptionText').hide('fast');
+                }
+                else {
+                    $(this).parent().children('.divDescriptionText').show('fast');
+                }
+            });
+
+            var x = $('#KeyboardPad').jqKeyPad({
+                captureDocumentKeyPress: false,
+                keyPadToShowOnShift: 'UpperCaseKeyboard',
+                keyPadToShowOnUnshift: 'LowerCaseKeyboard',
+                onButtonCommand: function (e) {
+                    if (e.command == "Close") {
+                        $('#overlay').addClass('hidden');
+                        $('#KeyboardPad').addClass('hidden');
+                        $('body').removeClass('tmpFixed');
+                        $('#KeyboardPad').jqKeyPad('destroy');
+                    }
+                    return true;
+                }
+            });
+
+            $('.showOnLoad').show();
+        });
+    </script>
+</head>
+<body>
+    <div id="PageContainer">
+        <div id="PageTitle">
+            <h1><a href="http://www.vacatola.com">VACATOLA.COM</a></h1>
+        </div>
+        
+        <h1 id="KeyPadHeader1">jqKeyPad</h1>
+        <a class="download" href="http://code.google.com/p/jqkeypad/downloads/list">Download jqKeyPad</a>
+        <h2>A JQuery Keyboard Plugin</h2>
+        
+        <img id="imgKeyPadThumb" class="imgKeyPadThumb" src="Assets/keyPad-ThumbSize.png" />
+        
+        
+
+        <div id="JQueryFormat">
+            <h3>JQuery Samples</h3>
+            <div class="usage">
+                <div>
+                    <div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1">Show Simple</div>
+                                <br class="clearBoth" />
+                            </div>
+                            <div class="divDescriptionText showOnLoad">
+                                <pre class="language-javascript">
+    $('#divContainer').jqKeyPad();
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1">Show with Options</div>
+                                <br class="clearBoth" />
+                            </div>
+                            <div class="divDescriptionText">
+                                <pre class="language-javascript">
+$('#divContainer').jqKeyPad({
+    pasteAllowed: true,
+    focusOnLoad: false,
+    captureDocumentKeyPress: true,
+    keyPadToShowOnShift: 'UpperCaseKeyboard',
+    keyPadToShowOnUnshift: 'LowerCaseKeyboard',
+    onButtonCommand: function (e) { e.command; e.argument; e.value; },
+    mode: 'numeric' or 'alphanumeric',
+    precision: 2, //only used in numeric mode
+    initialKeyPad: 'KeyPadNameToLoadFirst',
+    onSpecialKeyDown: function(e){},//properties of e=> e.keyCode  e.key
+    specialKeyCombos: {
+        "ctrl": "5",
+        "numlock" : "T" // requires numlock shift t
+    },
+    onSpecialKeyCombo: function (e) { } //e.specialKey   e.regularKey
+});
+            </pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="HtmlFormat">
+            <h3>HTML Samples</h3>
+            <div class="usage">
+                <div>
+                    <div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1">Show Numeric KeyPad</div>
+                                <br class="clearBoth" />
+                            </div>
+                            <div class="divDescriptionText">
+                                <pre class="language-html">
+&lt;div id=&quot;NumberPad&quot; mode=&quot;numeric&quot; precision=&quot;5&quot;&gt;
+    &lt;div class=&quot;KeyPadValue&quot;&gt;&lt;/div&gt;
+    &lt;input type=&quot;hidden&quot; id=&quot;txtEnteredValue&quot; /&gt;
+    &lt;ul&gt;
+        &lt;li val=&quot;1&quot;&gt;&lt;div&gt;1&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;2&quot;&gt;&lt;div&gt;2&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;3&quot;&gt;&lt;div&gt;3&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;double floatRight back&quot;&gt;&lt;div&gt;&amp;larr;&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;4&quot;&gt;&lt;div&gt;4&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;5&quot;&gt;&lt;div&gt;5&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;6&quot;&gt;&lt;div&gt;6&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;double floatRight reset&quot;&gt;&lt;div&gt;Clear&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;7&quot;&gt;&lt;div&gt;7&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;8&quot;&gt;&lt;div&gt;8&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;9&quot;&gt;&lt;div&gt;9&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;large floatRight&quot; val=&quot;testval&quot; 
+                commandName=&quot;testname&quot; commandArgument=&quot;testargs&quot;&gt;&lt;div&gt;Cmd&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;0&quot;&gt;&lt;div&gt;0&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;00&quot;&gt;&lt;div&gt;00&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;.&quot;&gt;&lt;div&gt;.&lt;/div&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+            </pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1">Show Alphanumeric KeyPad</div>
+                                <br class="clearBoth" />
+                            </div>
+                            <div class="divDescriptionText">
+                                <pre class="language-html">
+&lt;div id=&quot;KeyboardPad&quot; mode=&quot;alphanumeric&quot;&gt;
+    &lt;div class=&quot;KeyPadValue&quot;&gt;&lt;/div&gt;
+    &lt;input type=&quot;hidden&quot; id=&quot;txtEnteredValue&quot; /&gt;
+    &lt;ul&gt;
+        &lt;!--first row--&gt;
+        &lt;li val=&quot;~&quot;&gt;&lt;div&gt;~&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;1&quot;&gt;&lt;div&gt;1&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;2&quot;&gt;&lt;div&gt;2&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;3&quot;&gt;&lt;div&gt;3&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;4&quot;&gt;&lt;div&gt;4&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;5&quot;&gt;&lt;div&gt;5&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;6&quot;&gt;&lt;div&gt;6&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;7&quot;&gt;&lt;div&gt;7&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;8&quot;&gt;&lt;div&gt;8&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;9&quot;&gt;&lt;div&gt;9&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;0&quot;&gt;&lt;div&gt;0&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;-&quot;&gt;&lt;div&gt;-&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;=&quot;&gt;&lt;div&gt;=&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;back&quot;&gt;&lt;div&gt;&amp;larr;&lt;/div&gt;&lt;/li&gt;
+
+        &lt;!--second row--&gt;
+        &lt;li val=&quot;&amp;#09;&quot;&gt;&lt;div&gt;Tab&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;q&quot;&gt;&lt;div&gt;q&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;w&quot;&gt;&lt;div&gt;w&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;e&quot;&gt;&lt;div&gt;e&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;r&quot;&gt;&lt;div&gt;r&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;t&quot;&gt;&lt;div&gt;t&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;y&quot;&gt;&lt;div&gt;y&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;u&quot;&gt;&lt;div&gt;u&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;i&quot;&gt;&lt;div&gt;i&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;o&quot;&gt;&lt;div&gt;o&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;p&quot;&gt;&lt;div&gt;p&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;[&quot;&gt;&lt;div&gt;[&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;]&quot;&gt;&lt;div&gt;]&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;\&quot;&gt;&lt;div&gt;\&lt;/div&gt;&lt;/li&gt;
+
+                
+        &lt;!--third row--&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; commandName=&quot;Caps&quot; commandArgument=&quot;&quot;&gt;&lt;div&gt;Caps&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;a&quot;&gt;&lt;div&gt;a&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;s&quot;&gt;&lt;div&gt;s&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;d&quot;&gt;&lt;div&gt;d&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;f&quot;&gt;&lt;div&gt;f&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;g&quot;&gt;&lt;div&gt;g&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;h&quot;&gt;&lt;div&gt;h&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;j&quot;&gt;&lt;div&gt;j&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;k&quot;&gt;&lt;div&gt;k&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;l&quot;&gt;&lt;div&gt;l&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;;&quot;&gt;&lt;div&gt;;&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;&#39;&quot;&gt;&lt;div&gt;&#39;&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; commandName=&quot;Enter&quot; commandArgument=&quot;&quot;&gt;&lt;div&gt;Enter&lt;/div&gt;&lt;/li&gt;
+
+                
+        &lt;!--fourth row--&gt;
+        &lt;li class=&quot;double&quot; commandName=&quot;Shift&quot; commandArgument=&quot;&quot;&gt;&lt;div&gt;Shift&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;z&quot;&gt;&lt;div&gt;z&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;x&quot;&gt;&lt;div&gt;x&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;c&quot;&gt;&lt;div&gt;c&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;v&quot;&gt;&lt;div&gt;v&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;b&quot;&gt;&lt;div&gt;b&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;n&quot;&gt;&lt;div&gt;n&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;m&quot;&gt;&lt;div&gt;m&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;,&quot;&gt;&lt;div&gt;,&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;.&quot;&gt;&lt;div&gt;.&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;/&quot;&gt;&lt;div&gt;/&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;double reset&quot;&gt;&lt;div&gt;Clear&lt;/div&gt;&lt;/li&gt;
+
+                    
+                
+        &lt;!--fifth row--&gt;
+        &lt;li val=&quot;@&quot;&gt;&lt;div&gt;@&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; val=&quot;.com&quot;&gt;&lt;div&gt;.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;triple&quot; val=&quot;@gmail.com&quot;&gt;&lt;div&gt;@gmail.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;quadruple&quot; val=&quot; &quot;&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;triple&quot; val=&quot;@hotmail.com&quot;&gt;&lt;div&gt;@hotmail.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; val=&quot;.net&quot;&gt;&lt;div&gt;.net&lt;/div&gt;&lt;/li&gt;
+
+
+    &lt;/ul&gt;
+
+    &lt;br class=&quot;clearBoth&quot; /&gt;
+&lt;/div&gt;
+            </pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1">Show with Multiple KeyPads</div>
+                                <br class="clearBoth" />
+                            </div>
+                            <div class="divDescriptionText">
+                                <pre class="language-html">
+&lt;div id=&quot;KeyboardPad&quot; mode=&quot;alphanumeric&quot; initialKeyPad=&quot;LowerCaseKeyboard&quot;&gt;
+    &lt;div class=&quot;KeyPadValue&quot;&gt;&lt;/div&gt;
+    &lt;input type=&quot;hidden&quot; id=&quot;txtEnteredValue&quot; /&gt;
+    &lt;ul KeyPadName=&quot;LowerCaseKeyboard&quot;&gt;
+        &lt;!--first row--&gt;
+        &lt;li val=&quot;`&quot;&gt;&lt;div&gt;`&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;1&quot;&gt;&lt;div&gt;1&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;2&quot;&gt;&lt;div&gt;2&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;3&quot;&gt;&lt;div&gt;3&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;4&quot;&gt;&lt;div&gt;4&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;5&quot;&gt;&lt;div&gt;5&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;6&quot;&gt;&lt;div&gt;6&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;7&quot;&gt;&lt;div&gt;7&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;8&quot;&gt;&lt;div&gt;8&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;9&quot;&gt;&lt;div&gt;9&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;0&quot;&gt;&lt;div&gt;0&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;-&quot;&gt;&lt;div&gt;-&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;=&quot;&gt;&lt;div&gt;=&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;back&quot;&gt;&lt;div&gt;&amp;larr;&lt;/div&gt;&lt;/li&gt;
+
+        &lt;!--second row--&gt;
+        &lt;li val=&quot;&amp;#09;&quot;&gt;&lt;div&gt;Tab&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;q&quot;&gt;&lt;div&gt;q&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;w&quot;&gt;&lt;div&gt;w&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;e&quot;&gt;&lt;div&gt;e&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;r&quot;&gt;&lt;div&gt;r&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;t&quot;&gt;&lt;div&gt;t&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;y&quot;&gt;&lt;div&gt;y&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;u&quot;&gt;&lt;div&gt;u&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;i&quot;&gt;&lt;div&gt;i&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;o&quot;&gt;&lt;div&gt;o&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;p&quot;&gt;&lt;div&gt;p&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;[&quot;&gt;&lt;div&gt;[&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;]&quot;&gt;&lt;div&gt;]&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;\&quot;&gt;&lt;div&gt;\&lt;/div&gt;&lt;/li&gt;
+                
+        &lt;!--third row--&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; commandName=&quot;ShowPad&quot; 
+                    commandArgument=&quot;UpperCaseKeyboard&quot;&gt;&lt;div&gt;Caps&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;a&quot;&gt;&lt;div&gt;a&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;s&quot;&gt;&lt;div&gt;s&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;d&quot;&gt;&lt;div&gt;d&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;f&quot;&gt;&lt;div&gt;f&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;g&quot;&gt;&lt;div&gt;g&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;h&quot;&gt;&lt;div&gt;h&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;j&quot;&gt;&lt;div&gt;j&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;k&quot;&gt;&lt;div&gt;k&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;l&quot;&gt;&lt;div&gt;l&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;;&quot;&gt;&lt;div&gt;;&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;&#39;&quot;&gt;&lt;div&gt;&#39;&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;\r&quot; class=&quot;fiftyPercentLarger&quot; 
+                    commandName=&quot;Enter&quot; commandArgument=&quot;&quot;&gt;&lt;div&gt;Enter&lt;/div&gt;&lt;/li&gt;
+
+        &lt;!--fourth row--&gt;
+        &lt;li class=&quot;double&quot; commandName=&quot;ShowPad&quot; 
+                    commandArgument=&quot;NumberKeyPad&quot;&gt;&lt;div&gt;NumPad&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;z&quot;&gt;&lt;div&gt;z&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;x&quot;&gt;&lt;div&gt;x&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;c&quot;&gt;&lt;div&gt;c&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;v&quot;&gt;&lt;div&gt;v&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;b&quot;&gt;&lt;div&gt;b&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;n&quot;&gt;&lt;div&gt;n&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;m&quot;&gt;&lt;div&gt;m&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;,&quot;&gt;&lt;div&gt;,&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;.&quot;&gt;&lt;div&gt;.&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;/&quot;&gt;&lt;div&gt;/&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;double reset&quot;&gt;&lt;div&gt;Clear&lt;/div&gt;&lt;/li&gt;
+                
+        &lt;!--fifth row--&gt;
+        &lt;li val=&quot;@&quot;&gt;&lt;div&gt;@&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; val=&quot;.com&quot;&gt;&lt;div&gt;.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;triple&quot; val=&quot;@gmail.com&quot;&gt;&lt;div&gt;@gmail.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;quadruple&quot; val=&quot; &quot; commandName=&quot;Space&quot; 
+                    commandArgument=&quot;&amp;nbsp;&quot;&gt;&lt;div&gt;SpaceCommand&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;triple&quot; val=&quot;@hotmail.com&quot;&gt;&lt;div&gt;@hotmail.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; val=&quot;.net&quot;&gt;&lt;div&gt;.net&lt;/div&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+
+            
+    &lt;ul KeyPadName=&quot;UpperCaseKeyboard&quot;&gt;
+        &lt;!--first row--&gt;
+        &lt;li val=&quot;~&quot;&gt;&lt;div&gt;~&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;!&quot;&gt;&lt;div&gt;!&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;@&quot;&gt;&lt;div&gt;@&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;#&quot;&gt;&lt;div&gt;#&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;$&quot;&gt;&lt;div&gt;$&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;%&quot;&gt;&lt;div&gt;%&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;^&quot;&gt;&lt;div&gt;^&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;&amp;&quot;&gt;&lt;div&gt;&amp;amp;&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;*&quot;&gt;&lt;div&gt;*&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;(&quot;&gt;&lt;div&gt;(&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;)&quot;&gt;&lt;div&gt;)&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;_&quot;&gt;&lt;div&gt;_&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;+&quot;&gt;&lt;div&gt;+&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;back&quot;&gt;&lt;div&gt;&amp;larr;&lt;/div&gt;&lt;/li&gt;
+
+        &lt;!--second row--&gt;
+        &lt;li val=&quot;&amp;#09;&quot;&gt;&lt;div&gt;Tab&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;Q&quot;&gt;&lt;div&gt;Q&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;W&quot;&gt;&lt;div&gt;W&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;E&quot;&gt;&lt;div&gt;E&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;R&quot;&gt;&lt;div&gt;R&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;T&quot;&gt;&lt;div&gt;T&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;Y&quot;&gt;&lt;div&gt;Y&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;U&quot;&gt;&lt;div&gt;U&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;I&quot;&gt;&lt;div&gt;I&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;O&quot;&gt;&lt;div&gt;O&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;P&quot;&gt;&lt;div&gt;P&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;{&quot;&gt;&lt;div&gt;{&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;}&quot;&gt;&lt;div&gt;}&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;|&quot;&gt;&lt;div&gt;|&lt;/div&gt;&lt;/li&gt;
+                
+        &lt;!--third row--&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; commandName=&quot;ShowPad&quot; 
+                    commandArgument=&quot;LowerCaseKeyboard&quot;&gt;&lt;div&gt;Caps&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;A&quot;&gt;&lt;div&gt;A&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;S&quot;&gt;&lt;div&gt;S&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;D&quot;&gt;&lt;div&gt;D&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;F&quot;&gt;&lt;div&gt;F&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;G&quot;&gt;&lt;div&gt;G&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;H&quot;&gt;&lt;div&gt;H&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;J&quot;&gt;&lt;div&gt;J&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;K&quot;&gt;&lt;div&gt;K&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;L&quot;&gt;&lt;div&gt;L&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;:&quot;&gt;&lt;div&gt;:&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&#39;&quot;&#39;&gt;&lt;div&gt;&quot;&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;\r&quot; class=&quot;fiftyPercentLarger&quot; 
+                    commandName=&quot;Enter&quot; commandArgument=&quot;&quot;&gt;&lt;div&gt;Enter&lt;/div&gt;&lt;/li&gt;
+
+        &lt;!--fourth row--&gt;
+        &lt;li class=&quot;double&quot; commandName=&quot;ShowPad&quot; 
+                    commandArgument=&quot;NumberKeyPad&quot;&gt;&lt;div&gt;NumPad&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;Z&quot;&gt;&lt;div&gt;Z&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;X&quot;&gt;&lt;div&gt;X&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;C&quot;&gt;&lt;div&gt;C&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;V&quot;&gt;&lt;div&gt;V&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;B&quot;&gt;&lt;div&gt;B&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;N&quot;&gt;&lt;div&gt;N&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;M&quot;&gt;&lt;div&gt;M&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;&lt;&quot;&gt;&lt;div&gt;&amp;lt;&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;&gt;&quot;&gt;&lt;div&gt;&amp;gt;&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;?&quot;&gt;&lt;div&gt;?&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;double reset&quot;&gt;&lt;div&gt;Clear&lt;/div&gt;&lt;/li&gt;
+                
+        &lt;!--fifth row--&gt;
+        &lt;li val=&quot;:)&quot;&gt;&lt;div&gt;:)&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; val=&quot;.com&quot;&gt;&lt;div&gt;.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;triple&quot; val=&quot;@gmail.com&quot;&gt;&lt;div&gt;@gmail.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;quadruple&quot; val=&quot; &quot; commandName=&quot;Space&quot; 
+                    commandArgument=&quot;&amp;nbsp;&quot;&gt;&lt;div&gt;SpaceCommand&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;triple&quot; val=&quot;@hotmail.com&quot;&gt;&lt;div&gt;@hotmail.com&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;fiftyPercentLarger&quot; val=&quot;.net&quot;&gt;&lt;div&gt;.net&lt;/div&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;ul KeyPadName=&quot;NumberKeyPad&quot;&gt;
+        &lt;li class=&quot;back floatRight&quot;&gt;&lt;div&gt;&amp;larr;&lt;/div&gt;&lt;/li&gt;     
+        &lt;li class=&quot;double floatRight&quot; val=&quot;\r&quot; class=&quot;fiftyPercentLarger&quot; 
+                    commandName=&quot;Enter&quot; commandArgument=&quot;&quot;&gt;&lt;div&gt;Enter&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;quadruple floatRight&quot; val=&quot; &quot; commandName=&quot;Space&quot; 
+                    commandArgument=&quot;&amp;nbsp;&quot;&gt;&lt;div&gt;SpaceCommand&lt;/div&gt;&lt;/li&gt;
+
+        &lt;li val=&quot;1&quot;&gt;&lt;div&gt;1&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;2&quot;&gt;&lt;div&gt;2&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;3&quot;&gt;&lt;div&gt;3&lt;/div&gt;&lt;/li&gt;
+        &lt;li class=&quot;clearBoth&quot; val=&quot;4&quot;&gt;&lt;div&gt;4&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;5&quot;&gt;&lt;div&gt;5&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;6&quot;&gt;&lt;div&gt;6&lt;/div&gt;&lt;/li&gt;
+
+        &lt;li class=&quot;double reset floatRight&quot;&gt;&lt;div&gt;Clear&lt;/div&gt;&lt;/li&gt; 
+
+        &lt;li class=&quot;clearBoth&quot; val=&quot;7&quot;&gt;&lt;div&gt;7&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;8&quot;&gt;&lt;div&gt;8&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;9&quot;&gt;&lt;div&gt;9&lt;/div&gt;&lt;/li&gt;
+
+        &lt;li class=&quot;quadruple floatRight&quot; commandName=&quot;ShowPad&quot; 
+                    commandArgument=&quot;LowerCaseKeyboard&quot;&gt;&lt;div&gt;Lower Case Keys&lt;/div&gt;&lt;/li&gt; 
+
+        &lt;li class=&quot;clearBoth&quot; val=&quot;0&quot;&gt;&lt;div&gt;0&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;.&quot;&gt;&lt;div&gt;.&lt;/div&gt;&lt;/li&gt;
+        &lt;li val=&quot;,&quot;&gt;&lt;div&gt;,&lt;/div&gt;&lt;/li&gt;
+                
+        &lt;li class=&quot;quadruple floatRight&quot; commandName=&quot;ShowPad&quot; 
+                    commandArgument=&quot;UpperCaseKeyboard&quot;&gt;&lt;div&gt;Upper Case Keys&lt;/div&gt;&lt;/li&gt; 
+                         
+                
+    &lt;/ul&gt;
+    &lt;br class=&quot;clearBoth&quot; /&gt;
+&lt;/div&gt;
+            </pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+        </div>
+
+        
+        <div id="usage" class="usage">
+            <h3>Usage</h3>            
+            <div>
+                <h4>Options</h4>
+                <div>
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">keyPadToShowOnShift</div>
+                            <div class="descHeader2">String</div>
+                            <div class="descHeader3"><span>Default:</span> null</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            Use this option in the initializer to determine which KeyPad the user will see when holding down the shift key.
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        keyPadToShowOnShift: "nameOfUpperCaseKeyPad"
+    });
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">keyPadToShowOnUnshift</div>
+                            <div class="descHeader2">String</div>
+                            <div class="descHeader3"><span>Default:</span> null</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            Use this option in the initializer to determine which KeyPad the user when they are no longer holding down the shift key.
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        keyPadToShowOnUnshift: "nameOfLowerCaseKeyPad"
+    });
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">mode</div>
+                            <div class="descHeader2">String</div>
+                            <div class="descHeader3"><span>Default:</span> "numeric"</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            Use this option in the initializer to determine which mode you want the KeyPad to run in.
+                            <br /><br />
+                            Values: "numeric" or "alphanumeric" or "incognito"
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        mode: "alphanumeric"
+    });
+                            </pre>
+                            Incognito mode is designed to hide the KeyPad for instances where you want to use <a href="Examples/CharacterLimiter/example.html">jqKeyPad as an input-limiting tool</a>.
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">precision</div>
+                            <div class="descHeader2">Integer</div>
+                            <div class="descHeader3"><span>Default:</span> 2</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            When in numeric mode, determines how many decimals places the user is allowed to type. Not used in alphanumeric mode.
+                            <br /><br />
+                            The below snippet will support a maximum of five deicmal places (ie. 0.12345)
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        precision: 5
+    });
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">initialKeyPad</div>
+                            <div class="descHeader2">String</div>
+                            <div class="descHeader3"><span>Default:</span> null</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            When called from the intializer, specifies the initial KeyPad to be shown
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        initialKeyPad: "nameOfKeyPadToShowFirst"
+    });
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">specialKeyCombos</div>
+                            <div class="descHeader2">Object</div>
+                            <div class="descHeader3"><span>Default:</span> null</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            When called from the intializer, specifies which key combinations from the physical keyboard will be registered and used in the onSpecialKeyCombo event.
+                            <br /><br />
+                            Supported special keys: backspace, tab, shift, ctrl, alt, pause/break, capslock, escape, pageup, pagedown, end, home, leftarrow, uparrow, rightarrow, 
+                            downarrow, insert, delete, windowsleft, windowsright, select, numlock, scrolllock
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        specialKeyCombos: {
+            "numlock": "s",
+            "shift": "]",
+            "end": "X"
+        }
+    });
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">captureDocumentKeyPress</div>
+                            <div class="descHeader2">Boolean</div>
+                            <div class="descHeader3"><span>Default:</span> true</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            When called from the initializer, specifies whether or not jqKeyPad will capture all keypresses in the document. 
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        captureDocumentKeyPress: false
+    });
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">focusOnLoad</div>
+                            <div class="descHeader2">Boolean</div>
+                            <div class="descHeader3"><span>Default:</span> false</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            When called from the initializer, specifies whether or not jqKeyPad will focus on its value input when it loads. 
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        focusOnLoad: true
+    });
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">pasteAllowed</div>
+                            <div class="descHeader2">Boolean</div>
+                            <div class="descHeader3"><span>Default:</span> true</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            When called from the initializer, specifies whether or not jqKeyPad will accept pasting text into its value input if it is currently focused. 
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        pasteAllowed: false
+    });
+                            </pre>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div>
+                <h4>Events</h4>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">onButtonCommand</div>
+                            <div class="descHeader3"><span>Event Argument Properties:</span> command, argument, value</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This event is triggered when a KeyPad button with a specified commandName attribute is pressed
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        onButtonCommand: function(e){
+            if(e.command == "someCommand"){
+                alert(e.argument);
+                alert(e.value);
+            }
+        }
+    });
+                            </pre>
+
+                            <b>jqKeyPad-integrated commands</b>
+                            <br />
+                            Currently, the only integrated command is "ShowKeyPad". Calling this command will automatically display the KeyPad specified. No event definition is required to execute "ShowKeyPad".
+
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">onSpecialKeyDown</div>
+                            <div class="descHeader3"><span>Event Argument Properties:</span> keyCode, key</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This event is triggered when a physical keyboard button is held down. jqKeyPad keeps track of the down/up state of the special key using the IsSpecialKeyDown method. 
+                            The event argument's keyCode properties is the <a href="http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes">JavaScript Char Code</a> of the key that is held down. 
+                            <br /><br />
+                            The key property is jqKeyPad's interpretation of the special key. key values supported are: backspace, tab, shift, ctrl, alt, pause/break, capslock, escape, pageup, pagedown, end, home, leftarrow, uparrow, rightarrow, 
+                            downarrow, insert, delete, windowsleft, windowsright, select, numlock, scrolllock
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        onSpecialKeyDown: function(e){
+            if(e.key == "shift"){
+                alert(e.keyCode + ' : ' + e.key);
+            }
+        }
+    });
+                            </pre>
+
+                            <b>jqKeyPad-integrated special keys</b>
+                            <br />
+                            Currently, the only integrated special key is "shift". The jqKeyPad functionality works together with the keyPadToShowOnShift and keyPadToShowOnUnshift options to display different KeyPads when the shift button is held and let go. 
+                            You can use both the integrated KeyPad shifting and the onSpecialKeyDown event if you desire different functionality simultaneously.
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">onSpecialKeyCombo</div>
+                            <div class="descHeader3"><span>Event Argument Properties:</span> specialKey, regularKey</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This event works together with the specialKeyCombos and fires when one of the specialKeyCombos is pressed on the physical keyboard. 
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad({
+        specialKeyCombos: {
+            "numlock": "s",
+            "shift": "]",
+            "end": "X"
+        },
+        onSpecialKeyDown: function(e){
+                alert('special key combo fired: ' + e.specialKey + ' + ' + e.regularKey);
+        }
+    });
+                            </pre>
+
+                            Currently, only one special key + one regular key is supported.
+                        </div>
+                    </div>
+                    
+            </div>
+            <div>
+                <h4>Methods</h4>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">destroy</div>
+                            <div class="descHeader3"><span>No Method Argument</span></div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This method will destruct the current instance of jqKeyPad
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad('destroy');
+                            </pre>
+                            I am still trying to figure out how to properly destroy JQuery Plugins
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">GetValue</div>
+                            <div class="descHeader3"><span>No Method Argument</span></div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This method will get the current value of the text typed in the jqKeyPad instance
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad('GetValue');
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">ClearValue</div>
+                            <div class="descHeader3"><span>No Method Argument</span></div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This method will reset the current value of the text typed in the jqKeyPad instance to an empty string
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad('ClearValue');
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">ShowKeyPad</div>                            
+                            <div class="descHeader3"><span>Method Argument Type: </span>String</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This method allows you to show a different KeyPad.  All other KeyPads will be hidden.
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad('ShowKeyPad', 'nameOfKeyPadToDisplay');
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">IsSpecialKeyDown</div>                            
+                            <div class="descHeader3"><span>Method Argument Type: </span>String</div>
+                            <div class="descHeader2"><span>Return Type: Boolean</span></div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This method allows you to determine if a special key is currently pressed. Returns true if the key is pressed, false otherwise
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad('IsSpecialKeyDown', 'shift');
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1">Focus</div>                            
+                            <div class="descHeader3"><span>No Method Argument</span></div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            This method allows you to on the KeyPad's input control.
+                            <pre class="language-javascript">
+    $('#divContainer').jqKeyPad('Focus');
+                            </pre>
+                        </div>
+                    </div>
+            </div>
+            <div>
+                <h4>HTML Structure</h4>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1 width500">Fundamental HTML structure 1: The Container</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            There is an explicit structure to the basic jqKeyPad. The entire KeyPad must be wrapped in a div. This div is what you will use to create the KeyPad in JavaScript
+                            <pre class="language-html">
+    &lt;div id=&quot;NumberPad&quot;&gt;
+    &lt;/div&gt;
+                            </pre>
+                            The above HTML can create the jqKeyPad with the below initializer
+                            <pre class="language-javascript">                                
+    $('#NumberPad').jqKeyPad();
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1 width500">Fundamental HTML structure 2: Necessary Elements</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            Within the required div container, there are three elements that are absolutely required: an element of class="KeyPadValue", an input of id="txtEnteredValue" and at least one ul element
+                            <pre class="language-html">
+    &lt;div id=&quot;NumberPad&quot;&gt;
+        &lt;div class=&quot;KeyPadValue&quot;&gt;&lt;/div&gt;
+        &lt;input type=&quot;hidden&quot; id=&quot;txtEnteredValue&quot; /&gt;
+        &lt;ul&gt;&lt;/ul&gt;
+    &lt;/div&gt;
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1 width500">Fundamental HTML structure 3: Creating KeyPads</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            Each ul element represents a KeyPad. To have multiple KeyPads you simple need multiple ul elements. In order to distinguish KeyPads from each other, you give each ul
+                            element an attribute of KeyPadName and the attribute's value should be different for each KeyPad
+                            <pre class="language-html">
+&lt;div id=&quot;AlphaPad&quot;&gt;
+        &lt;div class=&quot;KeyPadValue&quot;&gt;&lt;/div&gt;
+        &lt;input type=&quot;hidden&quot; id=&quot;txtEnteredValue&quot; /&gt;
+    &lt;ul KeyPadName=&quot;LowerCaseKeyboard&quot;&gt;&lt;/ul&gt;
+    &lt;ul KeyPadName=&quot;UpperCaseKeyboard&quot;&gt;&lt;/ul&gt;
+&lt;/div&gt;
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1 width500">Fundamental HTML structure 4: Creating Buttons</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            Buttons are represented by li elements inside your ul lists. To assign a value to your button, give the li element and attribute of value.
+                            <br /><br />
+                            Notice in the example below that your button values are not restrictured to one character. You can use any value you want in your buttons.
+                            <pre class="language-html">
+&lt;div id=&quot;AlphaPad&quot;&gt;
+        &lt;div class=&quot;KeyPadValue&quot;&gt;&lt;/div&gt;
+        &lt;input type=&quot;hidden&quot; id=&quot;txtEnteredValue&quot; /&gt;
+    &lt;ul KeyPadName=&quot;LowerCaseKeyboard&quot;&gt;
+      &lt;li value=&quot;a&quot;&gt;a&lt;/li&gt;
+      &lt;li value=&quot;b&quot;&gt;b&lt;/li&gt;
+      &lt;li value=&quot;c&quot;&gt;c&lt;/li&gt;
+      &lt;li value=&quot;@gmail.com&quot;&gt;@gmail.com&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;ul KeyPadName=&quot;LowerCaseKeyboard&quot;&gt;
+      &lt;li value=&quot;A&quot;&gt;A&lt;/li&gt;
+      &lt;li value=&quot;B&quot;&gt;B&lt;/li&gt;
+      &lt;li value=&quot;C&quot;&gt;C&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1 width500">Fundamental HTML structure 5: Commands</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            Your buttons can be used for more than just setting values into your textbox. You can set commands on your buttons and handle the onButtonCommand event to create your
+                            own functionality for the commands.
+                            <br /><br />
+                            To create a command button, add the commandName and commandArgument attributes to your desired button (li element). These attributes, along with the value attribute, 
+                            will be passed into the onButtonCommand event's method argument. The value attribute is optional when using commands.
+                            <pre class="language-html">
+&lt;div id=&quot;AlphaPad&quot;&gt;
+        &lt;div class=&quot;KeyPadValue&quot;&gt;&lt;/div&gt;
+        &lt;input type=&quot;hidden&quot; id=&quot;txtEnteredValue&quot; /&gt;
+    &lt;ul KeyPadName=&quot;LowerCaseKeyboard&quot;&gt;
+      &lt;li value=&quot;a&quot;&gt;a&lt;/li&gt;
+      &lt;li value=&quot;b&quot;&gt;b&lt;/li&gt;
+      &lt;li value=&quot;c&quot;&gt;c&lt;/li&gt;
+      &lt;li value=&quot;@gmail.com&quot;&gt;@gmail.com&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;ul KeyPadName=&quot;LowerCaseKeyboard&quot;&gt;
+      &lt;li value=&quot;A&quot;&gt;A&lt;/li&gt;
+      &lt;li value=&quot;B&quot;&gt;B&lt;/li&gt;
+      &lt;li value=&quot;C&quot;&gt;C&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+                            </pre>
+                            <pre class="language-javascript">
+    $('#AlphaPad').jqKeyPad({
+        onButtomCommand : function(e){
+            //e.command e.argument e.value are accessible here                          
+        })                           
+    });
+                            </pre>
+                        </div>
+                    </div>
+                    
+                    <div class="divDescriptionContainer">
+                        <div class="divDescriptionTitle">
+                            <div class="descHeader1 width500">Fundamental HTML structure 6: Other Attributes and Built-in Functionality</div>
+                            <br class="clearBoth" />
+                        </div>
+                        <div class="divDescriptionText">
+                            Many of the options in the jaKeyPad initializer can also be used as element attributes. For example, if you are using a numeric KeyPad, your div container can
+                            contain the attributes mode and precision. If you want a button that executes the backspace, create a button with class="back". There is also an built-in clear 
+                            functionality by creating a button with class="reset".
+                            <br /><br />
+                            Please note that the HTML attributes will take precedence over their identical options in the jqKeyPad initializer.
+                            <pre class="language-html">
+    &lt;div id=&quot;NumberPad&quot; mode=&quot;numeric&quot; precision=&quot;5&quot;&gt;
+        &lt;div class=&quot;KeyPadValue&quot;&gt;&lt;/div&gt;
+        &lt;input type=&quot;hidden&quot; id=&quot;txtEnteredValue&quot; /&gt;
+        &lt;ul&gt;
+            &lt;li val=&quot;1&quot;&gt;&lt;div&gt;1&lt;/div&gt;&lt;/li&gt;
+            &lt;li val=&quot;2&quot;&gt;&lt;div&gt;2&lt;/div&gt;&lt;/li&gt;
+            &lt;li val=&quot;3&quot;&gt;&lt;div&gt;3&lt;/div&gt;&lt;/li&gt;
+            &lt;li class=&quot;back&quot;&gt;&lt;div&gt;&amp;larr;&lt;/div&gt;&lt;/li&gt;
+            &lt;li class=&quot;reset&quot;&gt;&lt;div&gt;Clear&lt;/div&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+                            </pre>
+                        </div>
+                    </div>
+
+            </div>
+
+            <div>
+                <h4>Other Notes</h4>
+                    
+                <div class="divDescriptionContainer">
+                    <div class="divDescriptionTitle">
+                        <div class="descHeader1">Styling</div>                  
+                        <br class="clearBoth" />
+                    </div>
+                    <div class="divDescriptionText">
+                        Styling jqKeyPad is entirely up to you. There are no built-in styles other than what you see in the samples.
+                        <br /><br />
+                        There is room for future consideration for an optional JQuery UI integration.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="Div1">
+            <h3>Demonstrations</h3>
+            <div class="usage">
+                <div>
+                    <div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1 width500"><a target="_blank" href="Examples/NumberPad/example.html">Numeric KeyPad Demonstration</a></div>
+                                <br class="clearBoth" />
+                            </div>
+                        </div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1 width500"><a target="_blank" href="Examples/Keyboard/example.html">Alphanumeric KeyPad Demonstration</a></div>
+                                <br class="clearBoth" />
+                            </div>
+                        </div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1 width500"><a target="_blank" href="Examples/MultipleKeyPads/example.html">Multiple KeyPad Demonstration</a></div>
+                                <br class="clearBoth" />
+                            </div>
+                        </div>
+                        <div class="divDescriptionContainer">
+                            <div class="divDescriptionTitle">
+                                <div class="descHeader1 width500"><a target="_blank" href="Examples/CharacterLimiter/example.html">jqKeyPad as a Hidden TextBox Character Limiter</a></div>
+                                <br class="clearBoth" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br class="clearBoth" />
+        <br class="clearBoth" />
+
+        <div id="PageFooter">
+            <h1><a href="http://www.vacatola.com">VACATOLA.COM</a></h1>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        <div id="overlay" class="hidden"></div>
+
+        <div id="KeyboardPad" class="hidden" mode="alphanumeric" initialKeyPad="LowerCaseKeyboard">
+            <input type="text" id="txtEnteredValue" />
+            <ul KeyPadName="LowerCaseKeyboard">
+                <!--first row-->
+                <li val="`"><div>`</div></li>
+                <li val="1"><div>1</div></li>
+                <li val="2"><div>2</div></li>
+                <li val="3"><div>3</div></li>
+                <li val="4"><div>4</div></li>
+                <li val="5"><div>5</div></li>
+                <li val="6"><div>6</div></li>
+                <li val="7"><div>7</div></li>
+                <li val="8"><div>8</div></li>
+                <li val="9"><div>9</div></li>
+                <li val="0"><div>0</div></li>
+                <li val="-"><div>-</div></li>
+                <li val="="><div>=</div></li>
+                <li class="back"><div>&larr;</div></li>
+
+                <!--second row-->
+                <li val="&#09;"><div>Tab</div></li>
+                <li val="q"><div>q</div></li>
+                <li val="w"><div>w</div></li>
+                <li val="e"><div>e</div></li>
+                <li val="r"><div>r</div></li>
+                <li val="t"><div>t</div></li>
+                <li val="y"><div>y</div></li>
+                <li val="u"><div>u</div></li>
+                <li val="i"><div>i</div></li>
+                <li val="o"><div>o</div></li>
+                <li val="p"><div>p</div></li>
+                <li val="["><div>[</div></li>
+                <li val="]"><div>]</div></li>
+                <li val="\"><div>\</div></li>
+                
+                <!--third row-->
+                <li class="fiftyPercentLarger" commandName="ShowPad" commandArgument="UpperCaseKeyboard"><div>Caps</div></li>
+                <li val="a"><div>a</div></li>
+                <li val="s"><div>s</div></li>
+                <li val="d"><div>d</div></li>
+                <li val="f"><div>f</div></li>
+                <li val="g"><div>g</div></li>
+                <li val="h"><div>h</div></li>
+                <li val="j"><div>j</div></li>
+                <li val="k"><div>k</div></li>
+                <li val="l"><div>l</div></li>
+                <li val=";"><div>;</div></li>
+                <li val="'"><div>'</div></li>
+                <li class="fiftyPercentLarger" commandName="Close" commandArgument=""><div>Close</div></li>
+
+                <!--fourth row-->
+                <li class="double" commandName="ShowPad" commandArgument="NumberKeyPad"><div>NumPad</div></li>
+                <li val="z"><div>z</div></li>
+                <li val="x"><div>x</div></li>
+                <li val="c"><div>c</div></li>
+                <li val="v"><div>v</div></li>
+                <li val="b"><div>b</div></li>
+                <li val="n"><div>n</div></li>
+                <li val="m"><div>m</div></li>
+                <li val=","><div>,</div></li>
+                <li val="."><div>.</div></li>
+                <li val="/"><div>/</div></li>
+                <li class="double reset"><div>Clear</div></li>
+                
+                <!--fifth row-->
+                <li val="@"><div>@</div></li>
+                <li class="fiftyPercentLarger" val=".com"><div>.com</div></li>
+                <li class="triple" val="@gmail.com"><div>@gmail.com</div></li>
+                <li class="quadruple" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="triple" val="@hotmail.com"><div>@hotmail.com</div></li>
+                <li class="fiftyPercentLarger" val=".net"><div>.net</div></li>
+            </ul>
+
+            
+            <ul KeyPadName="UpperCaseKeyboard">
+                <!--first row-->
+                <li val="~"><div>~</div></li>
+                <li val="!"><div>!</div></li>
+                <li val="@"><div>@</div></li>
+                <li val="#"><div>#</div></li>
+                <li val="$"><div>$</div></li>
+                <li val="%"><div>%</div></li>
+                <li val="^"><div>^</div></li>
+                <li val="&"><div>&amp;</div></li>
+                <li val="*"><div>*</div></li>
+                <li val="("><div>(</div></li>
+                <li val=")"><div>)</div></li>
+                <li val="_"><div>_</div></li>
+                <li val="+"><div>+</div></li>
+                <li class="back"><div>&larr;</div></li>
+
+                <!--second row-->
+                <li val="&#09;"><div>Tab</div></li>
+                <li val="Q"><div>Q</div></li>
+                <li val="W"><div>W</div></li>
+                <li val="E"><div>E</div></li>
+                <li val="R"><div>R</div></li>
+                <li val="T"><div>T</div></li>
+                <li val="Y"><div>Y</div></li>
+                <li val="U"><div>U</div></li>
+                <li val="I"><div>I</div></li>
+                <li val="O"><div>O</div></li>
+                <li val="P"><div>P</div></li>
+                <li val="{"><div>{</div></li>
+                <li val="}"><div>}</div></li>
+                <li val="|"><div>|</div></li>
+                
+                <!--third row-->
+                <li class="fiftyPercentLarger" commandName="ShowPad" commandArgument="LowerCaseKeyboard"><div>Caps</div></li>
+                <li val="A"><div>A</div></li>
+                <li val="S"><div>S</div></li>
+                <li val="D"><div>D</div></li>
+                <li val="F"><div>F</div></li>
+                <li val="G"><div>G</div></li>
+                <li val="H"><div>H</div></li>
+                <li val="J"><div>J</div></li>
+                <li val="K"><div>K</div></li>
+                <li val="L"><div>L</div></li>
+                <li val=":"><div>:</div></li>
+                <li val='"'><div>"</div></li>
+                <li val="\r" class="fiftyPercentLarger" commandName="Enter" commandArgument=""><div>Enter</div></li>
+
+                <!--fourth row-->
+                <li class="double" commandName="ShowPad" commandArgument="NumberKeyPad"><div>NumPad</div></li>
+                <li val="Z"><div>Z</div></li>
+                <li val="X"><div>X</div></li>
+                <li val="C"><div>C</div></li>
+                <li val="V"><div>V</div></li>
+                <li val="B"><div>B</div></li>
+                <li val="N"><div>N</div></li>
+                <li val="M"><div>M</div></li>
+                <li val="<"><div>&lt;</div></li>
+                <li val=">"><div>&gt;</div></li>
+                <li val="?"><div>?</div></li>
+                <li class="double reset"><div>Clear</div></li>
+                
+                <!--fifth row-->
+                <li val=":)"><div>:)</div></li>
+                <li class="fiftyPercentLarger" val=".com"><div>.com</div></li>
+                <li class="triple" val="@gmail.com"><div>@gmail.com</div></li>
+                <li class="quadruple" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="triple" val="@hotmail.com"><div>@hotmail.com</div></li>
+                <li class="fiftyPercentLarger" val=".net"><div>.net</div></li>
+            </ul>
+
+            <ul KeyPadName="NumberKeyPad">
+                <li class="back floatRight"><div>&larr;</div></li>     
+                <li class="double floatRight" val="\r" class="fiftyPercentLarger" commandName="Enter" commandArgument=""><div>Enter</div></li>
+                <li class="quadruple floatRight" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+
+                <li val="1"><div>1</div></li>
+                <li val="2"><div>2</div></li>
+                <li val="3"><div>3</div></li>
+                <li class="clearBoth" val="4"><div>4</div></li>
+                <li val="5"><div>5</div></li>
+                <li val="6"><div>6</div></li>
+
+                <li class="double reset floatRight"><div>Clear</div></li> 
+
+                <li class="clearBoth" val="7"><div>7</div></li>
+                <li val="8"><div>8</div></li>
+                <li val="9"><div>9</div></li>
+
+                <li class="quadruple floatRight" commandName="ShowPad" commandArgument="LowerCaseKeyboard"><div>Lower Case Keys</div></li> 
+
+                <li class="clearBoth" val="0"><div>0</div></li>
+                <li val="."><div>.</div></li>
+                <li val=","><div>,</div></li>
+                
+                <li class="quadruple floatRight" commandName="ShowPad" commandArgument="UpperCaseKeyboard"><div>Upper Case Keys</div></li> 
+                         
+                
+            </ul>
+            <br class="clearBoth" />
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-34492389-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+</script>
+</body>
+</html>
