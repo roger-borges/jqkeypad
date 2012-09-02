@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Sample Keyboard Pad</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+    <link rel="stylesheet" href="jq-keypad.css" type="text/css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" type="text/javascript"></script>
+    <script src="../../jquery-keypad.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var x = $('#KeyboardPad').jqKeyPad({
+                onButtonCommand: function (e) {
+                    return false;
+                },
+                captureDocumentKeyPress: false,
+                focusOnLoad: true
+            });
+        }); 
+
+
+</script>
+</head>
+<body>
+        <div id="PageContainer">
+        <h1>Keyboard Demonstration</h1>
+        <p>Characters allowed: lower case alphabet characters and the following special buttons: space, backspace, tab, delete, leftarrow, uparrow, rightarrow, downarrow</p>
+        <div id="KeyboardPad" mode="incognito">
+            <input type="text" id="txtEnteredValue" />
+            <ul>
+                <li specialVal="space"></li>
+                <li specialVal="backspace"></li>               
+                <li specialVal="tab"></li>
+                <li specialVal="delete"></li>              
+                <li specialVal="leftarrow"></li>
+                <li specialVal="uparrow"></li>
+                <li specialVal="rightarrow"></li>
+                <li specialVal="downarrow"></li> 
+                  
+                <li val="q"></li>
+                <li val="w"></li>
+                <li val="e"></li>
+                <li val="r"></li>
+                <li val="t"></li>
+                <li val="y"></li>
+                <li val="u"></li>
+                <li val="i"></li>
+                <li val="o"></li>
+                <li val="p"></li>
+                <li val="a"></li>
+                <li val="s"></li>
+                <li val="d"></li>
+                <li val="f"></li>
+                <li val="g"></li>
+                <li val="h"></li>
+                <li val="j"></li>
+                <li val="k"></li>
+                <li val="l"></li>                                
+                <li val="z"></li>
+                <li val="x"></li>
+                <li val="c"></li>
+                <li val="v"></li>
+                <li val="b"></li>
+                <li val="n"></li>
+                <li val="m"></li>
+                <li val=" "></li>
+            </ul>
+
+        </div>
+
+        <br class="clearBoth" />
+    </div>
+</body>
+</html>

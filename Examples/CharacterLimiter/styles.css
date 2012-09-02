@@ -1,0 +1,18 @@
+﻿div#PageContainer
+{
+    margin:0 auto;
+    padding:10px;
+    width:800px;
+    border:5px solid #000;
+}
+
+br.clearBoth
+{
+    clear:both;
+}
+
+h1
+{
+    margin:0 0 20px 0;
+    padding:0;
+}
