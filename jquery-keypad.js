@@ -285,15 +285,12 @@ Date: August 22, 2012
                         //document keypress, compares against values on keyboard
                         $(document).bind('keypress.jqKeyPad', function (e) {
                             var newChar = String.fromCharCode(e.keyCode ? e.keyCode : e.which);
-                            //replace carriage return with a value comparable to the attribute value of \r
-                            //if (newChar == "\r") {
-                            //    newChar = '\\r';
-                            //}
 
                             //determine if there is a special key combo pressed
                             var continueKeyPress = true;
                             if (options.onSpecialKeyCombo != null) {
-                                for (var i in options.specialKeyCombos) {
+                                var i;
+                                for (i in options.specialKeyCombos) {
                                     if (newChar == options.specialKeyCombos[i]) {
                                         //determine if this item's special key is currently down. if so, fire the onSpecialKeyCombo event
                                         if ($this.jqKeyPad('IsSpecialKeyDown', i) == true) {
@@ -308,7 +305,21 @@ Date: August 22, 2012
                                 }
                             }
 
+                            //FIREFOX FIX - firefox handles special keys on the keypress event. make sure this doesnt make it to the click call
+                            //ignore special keypresses as they are handled in teh keydown event
+                            //special key presses should not be allowed
+                            var specialCharMap = $this.data('specialCharMap');
+                            var x;
+                            for (x in specialCharMap) {
+                                if (x == e.keyCode && e.charCode == "0") {
+                                    return true;
+                                }
+                            }
+                            //END FIREFOX FIX
+
+                           
                             if (continueKeyPress) {
+
                                 //if the key pressed exists in our collection of buttons, then go ahead and click the button
                                 $($this).children('ul').children('li').each(function () {
                                     var value = $(this).attr('val');
@@ -417,26 +428,9 @@ Date: August 22, 2012
                         });
                     }
                     else {
+
                         //when not keeping track of document keypresses, keep track of txtEnteredValue keypresses
                         $('#txtEnteredValue').bind('keydown.jqKeyPad', function (e) {
-                            //if (e.shiftKey == true) {
-                            //    var keyPadToShowOnShift = $this.data('options').keyPadToShowOnShift;
-                            //    if (keyPadToShowOnShift != null && keyPadToShowOnShift !== undefined) {
-                            //        $this.children('ul').each(function () {
-                            //            var ulKeyPadName = $(this).attr('KeyPadName');
-                            //            if ($this.data('options').mode == 'incognito') {
-                            //                //do nothing in incognito mode
-                            //            }
-                            //            else if (ulKeyPadName == keyPadToShowOnShift) {
-                            //                $(this).show();
-                            //                $this.data('isShift', true);//set shift state to true
-                            //            }
-                            //            else {
-                            //                $(this).hide();
-                            //            }
-                            //        });
-                            //    }
-                            //}
 
                             if (e.shiftKey == true) {
                                 var keyPadToShowOnShift = $this.data('options').keyPadToShowOnShift;
@@ -529,6 +523,20 @@ Date: August 22, 2012
 
                         $('#txtEnteredValue').bind('keypress.jqKeyPad', function (e) {
 
+
+                            //FIREFOX FIX - firefox handles special keys on the keypress event. make sure this doesnt make it to the click call
+                            //ignore special keypresses as they are handled in teh keydown event
+                            //special key presses should not be allowed
+                            var specialCharMap = $this.data('specialCharMap');
+                            var x;
+                            for (x in specialCharMap) {
+                                if (x == e.keyCode && e.charCode == "0") {
+                                    return true;
+                                }
+                            }
+                            //END FIREFOX FIX
+
+
                             var newChar = String.fromCharCode(e.keyCode);
                             var found = false;
                             $($this).children('ul').children('li').each(function () {
@@ -539,7 +547,7 @@ Date: August 22, 2012
                                     return false;
                                 }
                             });
-                            return false;
+                            return !found;
                         });
 
                     }
