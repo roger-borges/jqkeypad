@@ -17,7 +17,6 @@
                 captureDocumentKeyPress: true,
                 onButtonCommand: function (e) {//properties of e => e.command  e.argument  e.value);
                     if (e.command == 'Enter') {
-                        //console.log('ENTER!');
                         var textToAdd = $('#KeyboardPad').jqKeyPad('GetValue') + '\n';
                         $('#txtEnterText').val($('#txtEnterText').val() + textToAdd);
                         $('#KeyboardPad').jqKeyPad('ClearValue');
@@ -29,7 +28,7 @@
                     }
                     
                     //return false to prevent the value from entering the keypad display
-                    return true;
+                    return false;
                 },
                 onSpecialKeyDown: function (e) {//properties of e=> e.keyCode  e.key
                 },
@@ -199,7 +198,7 @@
                 <li val=":)"><div>:)</div></li>
                 <li class="fiftyPercentLarger" val=".com"><div>.com</div></li>
                 <li class="triple" val="@gmail.com"><div>@gmail.com</div></li>
-                <li class="quadruple" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="quadruple" specialVal="space" commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
                 <li class="triple" val="@hotmail.com"><div>@hotmail.com</div></li>
                 <li class="fiftyPercentLarger" val=".net"><div>.net</div></li>
             </ul>
@@ -207,7 +206,7 @@
             <ul KeyPadName="NumberKeyPad">
                 <li class="back floatRight"><div>&larr;</div></li>     
                 <li class="double floatRight" val="\r" class="fiftyPercentLarger" commandName="Enter" commandArgument=""><div>Enter</div></li>
-                <li class="quadruple floatRight" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="quadruple floatRight" specialVal="space" commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
 
                 <li val="1"><div>1</div></li>
                 <li val="2"><div>2</div></li>
@@ -234,7 +233,7 @@
             </ul>
 
             <ul>
-                <li specialVal="space"></li>
+                <!--<li specialVal="space"></li>-->
                 <li specialVal="backspace"></li>               
                 <li specialVal="tab"></li>
                 <li specialVal="delete"></li>              

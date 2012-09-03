@@ -70,7 +70,10 @@
                         $('body').removeClass('tmpFixed');
                         $('#KeyboardPad').jqKeyPad('destroy');
                     }
-                    return true;
+                    else if (e.command == 'Space') {
+                        return false;
+                    }
+                    return false;
                 }
             });
 
@@ -1090,7 +1093,7 @@ $('#divContainer').jqKeyPad({
                 <li val="\"><div>\</div></li>
                 
                 <!--third row-->
-                <li class="fiftyPercentLarger" commandName="ShowPad" commandArgument="UpperCaseKeyboard"><div>Caps</div></li>
+                <li class="fiftyPercentLarger" specialVal="capslock" commandName="ShowPad" commandArgument="UpperCaseKeyboard"><div>Caps</div></li>
                 <li val="a"><div>a</div></li>
                 <li val="s"><div>s</div></li>
                 <li val="d"><div>d</div></li>
@@ -1102,10 +1105,10 @@ $('#divContainer').jqKeyPad({
                 <li val="l"><div>l</div></li>
                 <li val=";"><div>;</div></li>
                 <li val="'"><div>'</div></li>
-                <li class="fiftyPercentLarger" commandName="Close" commandArgument=""><div>Close</div></li>
+                <li class="fiftyPercentLarger" specialVal="end" commandName="Close" commandArgument=""><div>Close</div></li>
 
                 <!--fourth row-->
-                <li class="double" commandName="ShowPad" commandArgument="NumberKeyPad"><div>NumPad</div></li>
+                <li class="double" specialVal="numlock" commandName="ShowPad" commandArgument="NumberKeyPad"><div>NumPad</div></li>
                 <li val="z"><div>z</div></li>
                 <li val="x"><div>x</div></li>
                 <li val="c"><div>c</div></li>
@@ -1122,7 +1125,7 @@ $('#divContainer').jqKeyPad({
                 <li val="@"><div>@</div></li>
                 <li class="fiftyPercentLarger" val=".com"><div>.com</div></li>
                 <li class="triple" val="@gmail.com"><div>@gmail.com</div></li>
-                <li class="quadruple" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="quadruple" val=" "><div>&nbsp;</div></li>
                 <li class="triple" val="@hotmail.com"><div>@hotmail.com</div></li>
                 <li class="fiftyPercentLarger" val=".net"><div>.net</div></li>
             </ul>
@@ -1162,7 +1165,7 @@ $('#divContainer').jqKeyPad({
                 <li val="|"><div>|</div></li>
                 
                 <!--third row-->
-                <li class="fiftyPercentLarger" commandName="ShowPad" commandArgument="LowerCaseKeyboard"><div>Caps</div></li>
+                <li class="fiftyPercentLarger" specialVal="capslock" commandName="ShowPad" commandArgument="LowerCaseKeyboard"><div>Caps</div></li>
                 <li val="A"><div>A</div></li>
                 <li val="S"><div>S</div></li>
                 <li val="D"><div>D</div></li>
@@ -1194,7 +1197,7 @@ $('#divContainer').jqKeyPad({
                 <li val=":)"><div>:)</div></li>
                 <li class="fiftyPercentLarger" val=".com"><div>.com</div></li>
                 <li class="triple" val="@gmail.com"><div>@gmail.com</div></li>
-                <li class="quadruple" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="quadruple" val=" "><div>&nbsp;</div></li>
                 <li class="triple" val="@hotmail.com"><div>@hotmail.com</div></li>
                 <li class="fiftyPercentLarger" val=".net"><div>.net</div></li>
             </ul>
@@ -1202,7 +1205,7 @@ $('#divContainer').jqKeyPad({
             <ul KeyPadName="NumberKeyPad">
                 <li class="back floatRight"><div>&larr;</div></li>     
                 <li class="double floatRight" val="\r" class="fiftyPercentLarger" commandName="Enter" commandArgument=""><div>Enter</div></li>
-                <li class="quadruple floatRight" val=" " commandName="Space" commandArgument="&nbsp;"><div>SpaceCommand</div></li>
+                <li class="quadruple floatRight val=" "><div>&nbsp;</div></li>
 
                 <li val="1"><div>1</div></li>
                 <li val="2"><div>2</div></li>
@@ -1226,6 +1229,17 @@ $('#divContainer').jqKeyPad({
                 <li class="quadruple floatRight" commandName="ShowPad" commandArgument="UpperCaseKeyboard"><div>Upper Case Keys</div></li> 
                          
                 
+            </ul>
+
+            <ul style="display:none;">
+                <li specialVal="space"></li>
+                <li specialVal="backspace"></li>               
+                <li specialVal="tab"></li>
+                <li specialVal="delete"></li>              
+                <li specialVal="leftarrow"></li>
+                <li specialVal="uparrow"></li>
+                <li specialVal="rightarrow"></li>
+                <li specialVal="downarrow"></li> 
             </ul>
             <br class="clearBoth" />
         </div>
