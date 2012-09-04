@@ -1,8 +1,13 @@
-﻿#PageContainer
+﻿*
+{
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+#PageContainer
 {
     width:800px;
     margin:0 auto;
-    font-family:Arial;
+    font-family:verdana, arial, helvetica, sans-serif;
 }
 
 body.tmpFixed
@@ -213,9 +218,14 @@ div.divDescriptionContainer div.divDescriptionTitle .descHeader1
     float:left;
     color:#1b75bb;
 }
-div.divDescriptionContainer div.divDescriptionTitle .descHeader1.width500
+div.divDescriptionContainer div.divDescriptionTitle .descHeader1.width500,
+div.divDescriptionContainer div.divDescriptionTitle .descHeader3.width500
 {
     width:500px;
+}
+div.divDescriptionContainer div.divDescriptionTitle .descHeader1.width700
+{
+    width:700px;
 }
 
 div.divDescriptionContainer div.divDescriptionTitle:hover .descHeader1/*hover*/

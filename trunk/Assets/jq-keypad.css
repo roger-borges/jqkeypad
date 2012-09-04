@@ -20,7 +20,7 @@
         background-color:#fff;
         color:#000;
         border:5px solid #000;
-        font-size:20px;
+        font-size:18px;
         font-weight:bold;
         text-align:right;
     }
@@ -109,7 +109,7 @@
     
      div#KeyboardPad ul li div
      {
-         font-size:24px;
+         font-size:20px;
          padding-top:12px;
      }
     
