@@ -1,4 +1,9 @@
-﻿div#PageContainer
+﻿*
+{
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+div#PageContainer
 {
     margin:0 auto;
     padding:10px;

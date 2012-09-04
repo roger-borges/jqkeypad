@@ -124,6 +124,17 @@ Date: August 22, 2012
                         $this.data('currentValue', $this.children('#txtEnteredValue').val());
                     }
 
+                    var unselector = function (element) {
+                        if ($(element).is('input')==false) {
+                            $(element).attr('unselectable', 'on').css('-webkit-touch-callout', 'none').css('-webkit-user-select', 'none').css('-khtml-user-select', 'none').css('-moz-user-select', 'none').css('-ms-user-select', 'none').css('user-select', 'none');
+                            $(element).children().each(function () {
+                                unselector($(this));
+                            });
+                        }
+                    };
+
+                    unselector($(this));
+
                     
                     $(this).children('ul').children('li').bind('click.jqKeyPad', function () {
                         var continueValueProcessing = true;
@@ -282,58 +293,6 @@ Date: August 22, 2012
                     });
 
                     if (options.captureDocumentKeyPress) {
-                        //document keypress, compares against values on keyboard
-                        $(document).bind('keypress.jqKeyPad', function (e) {
-                            var newChar = String.fromCharCode(e.keyCode ? e.keyCode : e.which);
-
-                            //determine if there is a special key combo pressed
-                            var continueKeyPress = true;
-                            if (options.onSpecialKeyCombo != null) {
-                                var i;
-                                for (i in options.specialKeyCombos) {
-                                    if (newChar == options.specialKeyCombos[i]) {
-                                        //determine if this item's special key is currently down. if so, fire the onSpecialKeyCombo event
-                                        if ($this.jqKeyPad('IsSpecialKeyDown', i) == true) {
-                                            if (options.onSpecialKeyCombo({
-                                                specialKey: i,
-                                                regularKey: newChar
-                                            }) == false) {
-                                                continueKeyPress = false;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            //FIREFOX FIX - firefox handles special keys on the keypress event. make sure this doesnt make it to the click call
-                            //ignore special keypresses as they are handled in teh keydown event
-                            //special key presses should not be allowed
-                            var specialCharMap = $this.data('specialCharMap');
-                            var x;
-                            for (x in specialCharMap) {
-                                if (x == e.keyCode && e.charCode == "0") {
-                                    return true;
-                                }
-                            }
-                            //END FIREFOX FIX
-
-                           
-                            if (continueKeyPress) {
-
-                                //if the key pressed exists in our collection of buttons, then go ahead and click the button
-                                $($this).children('ul').children('li').each(function () {
-                                    var value = $(this).attr('val');
-                                    if (value != null && value == newChar) {
-                                        $(this).click();
-                                        return false;
-                                    }
-                                });
-                            }
-
-                            if ($('#txtEnteredValue').is(':focus') == true) {
-                                return false;
-                            }
-                        });
 
                         $(document).bind('keyup.jqKeyPad', function (e) {
                             if (e.keyCode == "16" && $this.data('isShift') == true) {
@@ -426,10 +385,86 @@ Date: August 22, 2012
 
 
                         });
+
+                        $(document).bind('keypress.jqKeyPad', function (e) {
+                            var newChar = String.fromCharCode(e.keyCode ? e.keyCode : e.which);
+
+                            //determine if there is a special key combo pressed
+                            var continueKeyPress = true;
+                            if (options.onSpecialKeyCombo != null) {
+                                var i;
+                                for (i in options.specialKeyCombos) {
+                                    if (newChar == options.specialKeyCombos[i]) {
+                                        //determine if this item's special key is currently down. if so, fire the onSpecialKeyCombo event
+                                        if ($this.jqKeyPad('IsSpecialKeyDown', i) == true) {
+                                            if (options.onSpecialKeyCombo({
+                                                specialKey: i,
+                                                regularKey: newChar
+                                            }) == false) {
+                                                continueKeyPress = false;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            //FIREFOX FIX - firefox handles special keys on the keypress event. make sure this doesnt make it to the click call
+                            //ignore special keypresses as they are handled in teh keydown event
+                            //special key presses should not be allowed
+                            var specialCharMap = $this.data('specialCharMap');
+                            var x;
+                            for (x in specialCharMap) {
+                                if (x == e.keyCode && e.charCode == "0") {
+                                    return true;
+                                }
+                            }
+                            //END FIREFOX FIX
+
+                           
+                            if (continueKeyPress) {
+
+                                //if the key pressed exists in our collection of buttons, then go ahead and click the button
+                                $($this).children('ul').children('li').each(function () {
+                                    var value = $(this).attr('val');
+                                    if (value != null && value == newChar) {
+                                        $(this).click();
+                                        return false;
+                                    }
+                                });
+                            }
+
+                            if ($('#txtEnteredValue').is(':focus') == true) {
+                                return false;
+                            }
+                        });
                     }
                     else {
 
-                        //when not keeping track of document keypresses, keep track of txtEnteredValue keypresses
+                        $('#txtEnteredValue').bind('keyup.jqKeyPad', function (e) {
+                            if (e.keyCode == "16" && $this.data('isShift') == true) {
+                                $this.data('isShift', false);//set shift state to true
+                                var keyPadToShowOnUnshift = $this.data('options').keyPadToShowOnUnshift;
+                                if (keyPadToShowOnUnshift != null && keyPadToShowOnUnshift !== undefined) {
+                                    $this.children('ul').each(function () {
+                                        var ulKeyPadName = $(this).attr('KeyPadName');
+                                        if ($this.data('options').mode == 'incognito') {
+                                            //do nothing in incognito mode
+                                        }
+                                        else if (ulKeyPadName == keyPadToShowOnUnshift) {
+                                            $(this).show();
+                                        }
+                                        else {
+                                            $(this).hide();
+                                        }
+                                    });
+                                }
+                            }
+
+                            if (specialCharMap[e.keyCode] !== undefined) {
+                                $this.data('is' + e.keyCode, false);
+                            }
+                        });
+
                         $('#txtEnteredValue').bind('keydown.jqKeyPad', function (e) {
 
                             if (e.shiftKey == true) {
@@ -496,31 +531,6 @@ Date: August 22, 2012
                             }
                         });
 
-                        $('#txtEnteredValue').bind('keyup.jqKeyPad', function (e) {
-                            if (e.keyCode == "16" && $this.data('isShift') == true) {
-                                $this.data('isShift', false);//set shift state to true
-                                var keyPadToShowOnUnshift = $this.data('options').keyPadToShowOnUnshift;
-                                if (keyPadToShowOnUnshift != null && keyPadToShowOnUnshift !== undefined) {
-                                    $this.children('ul').each(function () {
-                                        var ulKeyPadName = $(this).attr('KeyPadName');
-                                        if ($this.data('options').mode == 'incognito') {
-                                            //do nothing in incognito mode
-                                        }
-                                        else if (ulKeyPadName == keyPadToShowOnUnshift) {
-                                            $(this).show();
-                                        }
-                                        else {
-                                            $(this).hide();
-                                        }
-                                    });
-                                }
-                            }
-
-                            if (specialCharMap[e.keyCode] !== undefined) {
-                                $this.data('is' + e.keyCode, false);
-                            }
-                        });
-
                         $('#txtEnteredValue').bind('keypress.jqKeyPad', function (e) {
 
 
@@ -547,9 +557,12 @@ Date: August 22, 2012
                                     return false;
                                 }
                             });
-                            return !found;
-                        });
 
+
+                            if ($('#txtEnteredValue').is(':focus') == true) {
+                                return false;
+                            }
+                        });
                     }
 
                     $('#txtEnteredValue').bind('paste.jqKeyPad', function (e) {
